@@ -87,7 +87,7 @@ int main(){ //main -> makes the program go
     cin>>price>>quantity; //take in multiple items with cin
     //cin skips white space to get to the next value
     total = price*quantity;
-    cout<<"The total price is: "<<total<<endl;
+    cout<<"The total price is: $"<<total<<endl;
 
     return 0; //old-style "flag" that everything executed okay
 }
