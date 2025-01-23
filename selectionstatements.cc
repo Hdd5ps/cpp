@@ -149,6 +149,49 @@ int main() {
     return 0;
 }
 
+
+Logical Connectives
+AND - && Both sides have to be true
+OR - || one side needs to be true
+NOT = ! logical opposite
+
+
+p q p&&q p||q !p
+T T T    T    F
+T F F    T    F
+F T F    T    T
+F F F    T    T
+
+Tommorw is (1/24) Quiz
+I/0
+arithmetic/shortcuts
+relational operators -> rules, order of precedence, trekay ties
+
+5 questions
+3 Short questions
+2 coding snippets
+write lines of code in C++
+do only what needs to be done 
+-no complete programs 
+-priting prompts -> out
+straighforward no bs type question
+
+will be online, 1/2 hour to complete
+
+if (num % 2 == 0){  remainder is zero 'even'
+cout<<"yes"<<endl;
+}
+else{
+cout<<"no"<<endl;
+}
+
+if (num % 5 == 0){
+cout<<"evenly divisible by 5"<<endl;
+}
+
+if (Num % 13 == 0){
+cout<<"it is divisible by thirteen"<<endl;
+}
 */
 // if - 1ast conditon
 // elif - python => else if condition
