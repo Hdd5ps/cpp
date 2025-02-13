@@ -99,7 +99,7 @@ int main() {
 
         else if ((dice1 == 5 && dice2 == 6) || (dice1 == 6 && dice2 == 5) ) 
         {
-            play = "Sacrifice Play";
+            play = "Sacrifice Fly";
             out++;
         } 
 
@@ -111,7 +111,7 @@ int main() {
 
         // displaying the results
         cout << "Resulting play: " << play << endl;
-        cout<<endl;
+        cout << endl;
 
     } while (out < 3);
 
