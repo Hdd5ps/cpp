@@ -18,7 +18,7 @@ Step 5 - If the inning ends, show the hits and walks.
 #include <fstream>
 using namespace std;
 
-enum Play { HOME_RUN, DOUBLE, TRIPLE, SINGLE, WALK, FLY_OUT, POP_OUT, DOUBLE_PLAY, GROUND_OUT, STRIKE_OUT, SACRIFICE_FLY, INVALID };
+enum Play { HOME_RUN, DOUBLE, TRIPLE, SINGLE, WALK, FLY_OUT, POP_OUT, DOUBLE_PLAY, GROUND_OUT, STRIKE_OUT, SACRIFICE_FLY};
 
 Play determinePlay(int dice1, int dice2) {
     if ((dice1 == 1 && dice2 == 1) || (dice1 == 6 && dice2 == 6)) {
@@ -74,11 +74,6 @@ Play determinePlay(int dice1, int dice2) {
         // Sacrifice Fly
         return SACRIFICE_FLY;
     } 
-    
-    else {
-        // Invalid play
-        return INVALID;
-    }
 }
 
 int main() {
@@ -184,7 +179,7 @@ int main() {
                 out++;
                 break;
 
-            case INVALID:
+            default :
                 cout << "Invalid play" << endl;
                 playResult << "Invalid play" << endl;
                 break;
