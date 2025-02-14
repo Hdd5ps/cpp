@@ -5,6 +5,7 @@
 
 using namespace std;
 
+
 /*
 It's getting close to the end of the semester, and you're looking to 
 determine grades for one of your classes.  The class in question has the 
@@ -30,6 +31,7 @@ a D (59.5)
 */
 
 
+
 //the enumerated type will help in grade calculations
 //five grade types, according to the above description
 enum gradeComponent{ASSIGNMENTS, LABS, QUIZZES, EXAMS, FINAL_EXAM};
@@ -50,28 +52,27 @@ double average() {
    //stops the input of scores 
   
    int Total = 0;
-   int count = 0;
-   int userInput = 0;
    
-   while (userInput != -1) {
-       cout<<"Enter a grade (or -1 to stop): ";
-       cin>>userInput;
-       if(userInput != -1) {
-           count++;
-           Total += userInput;
+   int count = 0;
+   
+   while (userInput != -1); {
+   cout<<"Enter a grade (or -1 to stop): "<<endl;
+   cin>>userInput;
+   count++;
+   Total += userInput;
+   
+   
        }
-   }
-      cout<<endl;
        
-   if (count == 0) {
-       return 0; // Prevent division by zero if no scores are entered
-   }
-
-   double pointsEarned = Total / count;
-   return pointsEarned;
-}
-
+    pointsEarned = Total / Count;
+    
+    return pointsEarned;
+    }
 /*
+
+  
+
+
 
 Let's assume the use of a sentinel-controlled loop.
 
@@ -86,36 +87,28 @@ the start.  In this case, the average returned would need to be 0.
 
 */
    
-double getWeight(gradeComponent g){
+double getWeight(gradeComponent);
 
-   switch(g){
+switch(gradeComponent);
+case 0:
+   return .2;
+   break;
+case 1:
+   return .15;
+   break;
+case 2:
 
-      case ASSIGNMENTS:
-         return 0.2;
-         break;
-   
-      case LABS:
-         return 0.15;
-         break;
-   
-      case QUIZZES:
-         return 0.15;
-         break;
-   
-      case EXAMS:
-         return 0.30;
-         break;
-   
-      default:
-         return 0.20;
-         break;
-   }
-}
-
+   return .15;
+   break;
+case 3:
+   return .30;
+   break;
+default:
+   return .20;
+   break;
 
 
 /*
-
 get the appropriate weight when the grade component is passed in.
 
 remember the above:
@@ -130,30 +123,8 @@ via the argument
 
 */
 
-void printComponent(gradeComponent g){
+void printComponent(gradeComponent g);
 
-   switch(g){
-      case ASSIGNMENTS:
-         cout<<"Assignments"<<endl;
-         break;
-
-      case LABS:
-         cout<<"Labs"<<endl;
-         break;
-
-      case QUIZZES:
-         cout<<"Quizzes"<<endl;
-         break;
-
-      case EXAMS:
-         cout<<"Exams"<<endl;
-         break;
-
-      default:
-         cout<<"Final Exam"<<endl;
-         break;
-   }
-}
 /*
 given a gradeComponent argument, print out the appropriate label
 
@@ -167,13 +138,7 @@ for quizzes, print Quizzes
       
 
 
-double targetScore(gradeComponent g, double targetFinalGrade, double averageGrade)
-{
-   double targetScore;
-   targetScore = (targetFinalGrade - averageGrade) / getWeight(FINAL_EXAM);
-   return targetScore;
-}
-
+double targetScore(gradeComponent, double, double);
 /*
 
 The function targetScore has three arguments:
@@ -182,17 +147,12 @@ The function targetScore has three arguments:
 -a double representing the total points earned
 
 the function calculates as follows:
-
-
 targetScore = (target final grade - total points) / the weight of the grade component
+
+
 */
 
-
-void printAverage(double score, gradeComponent g){
-   double currentAverage = score / (1 - getWeight(g));
-   cout<<"Current Average: "<<currentAverage<<endl;
-   cout<<endl;
-}   
+void printAverage(double, gradeComponent);   
 /* 
 
 printAverage takes two arguments, a double representing a score,
@@ -202,19 +162,10 @@ prints out current average
 
 the current average is determined by taking score and dividing
 by 1 - gradeComponent's weight
+
 */
 
-void inspectAndPrint(double current_grade){
-   if (current_grade < 0){
-      cout<<"The score has already been attained"<<endl; //ation: Check if the grade is less than 0 (cant have a negative total grade
-   }
-   else if (current_grade > 100){
-      cout<<"The score cannot be attained"<<endl;
-   } else {
-      cout<<"The score is achievable"<<endl;
-   }
-}
-
+void inspectAndPrint(double);
 /*
 
 looks at the double that's passed in that represents what score
@@ -228,14 +179,24 @@ score cannot be attained.
 
 */
 
+//calculates current course average
 double calculateCurrentGrade(){
    double averageGrade = 0, pointsEarned;
    //average grade is the sum of each category type multiplied by
    //the weight of the category type
-   for(int i = 0; i < FINAL_EXAM; i++){
+   for(int i = 0; i<(int)FINAL_EXAM; i++){
+   //using the enumerated value of FINAL_EXAM as the upper bound.
+   //cast the final exam's value as an int to make the loop condition
+   //possible
       printComponent((gradeComponent)i);
+      //go the other way now; take i and cast it as a gradeComponent
+      //to be able to print the enumerated type
       pointsEarned = average();
+      //call average, which will prompt for scores and returns
+      //the average of those scores
       averageGrade += pointsEarned * getWeight((gradeComponent)i);
+      //average grade is the sum of each category's average multiplied
+      //by each category's weight
    }
    
    //return the average grade, which has all scores, except the final
@@ -243,42 +204,7 @@ double calculateCurrentGrade(){
    return averageGrade;
 }
 
-void printNeededScores(double averageGrade){
-   string target = "";
-   double targetFinalGrade;
-   
-   for (int j = 0; j < 4; j++){ // 0, 1 , 2, 3
-      switch (j){
-         case 0:
-            targetFinalGrade = 89.5;
-            target = "A";
-            break;
-            
-         case 1:
-            targetFinalGrade = 79.5;
-            target = "B";
-            break;
-            
-         case 2:
-            targetFinalGrade = 69.5;
-            target = "C";
-            break;
-            
-         default:
-            targetFinalGrade = 59.5;
-            target = "D";
-            break;
-      }
-
-      //needed grades
-   
-      double TargetScoreNeeded = targetScore(FINAL_EXAM, targetFinalGrade, averageGrade);
-
-      cout << "Score on Final Exam Needed for an " << target << ": " << TargetScoreNeeded << endl;
-   
-      inspectAndPrint(TargetScoreNeeded);
-   }
-}
+void printNeededScores(double);
 
 /*
 print scores takes in a double representing points earned so far.
@@ -296,6 +222,7 @@ has already been attained or is impossible to attain.
 
 Note: a loop is probably your best bet, since you'll be doing a 
 good bit of repetition
+
 */
 
       
