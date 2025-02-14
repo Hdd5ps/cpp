@@ -21,6 +21,107 @@ using namespace std;
 enum Play { HOME_RUN, DOUBLE, TRIPLE, SINGLE, WALK, FLY_OUT, POP_OUT, DOUBLE_PLAY, GROUND_OUT, STRIKE_OUT, SACRIFICE_FLY};
 
 Play determinePlay(int dice1, int dice2) {
+
+    /*
+    int temp; //placeholder
+    // next steps: check and see if input2<input1
+    // if so, then swap values
+
+    temp = input2; //move one value into temp
+    input2 = input 1; //copy the other value into the other variable
+    inptu1 = temp; /replace the value of the first variable with value in temp.dice1
+
+    //assumption after swap: first input is small than second
+    //switch statement - since dealing with integers
+        switch(input1){ // if the first die is...
+            case 1:
+                switch(input2){ // and the second die is...
+                    case 1:                 
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        break;
+                    default: // invalid input
+                        break;
+                        }
+                break;
+            case 2: // if the first die is 2
+                switch(input2){
+                    case 2: // if second die is 2
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        break;
+                    default: // invalid input
+                        break;
+                        }
+                break;
+            case 3:
+                switch(input2){
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        break;
+                    default: // invalid input
+                        break;
+                        }
+                break;
+                case 4:
+                    switch(input2){
+                        case 4:
+                            break;
+                        case 5:
+                            break;
+                        case 6:
+                            break;
+                        default: // invalid input
+                            break;
+                                }
+                    break;
+                case 5:
+                    switch(input2){
+                        case 5:
+                            result = DOUBLE;
+                            break;
+                        case 6:
+                            result = SAC_FLY;
+                            break;
+                        default: // invalid input
+                            break;
+                                }
+                    break;
+                case 6:
+                    switch(input2){
+                        case 6:
+                            result = HOME_RUN;
+                            break;
+                        default: // invalid input
+                            break;
+                            }
+                    break;
+
+                defualt:
+                    result = NOT_PLAY;
+                    break;
+
+        }
+    */
     if ((dice1 == 1 && dice2 == 1) || (dice1 == 6 && dice2 == 6)) {
         // Home Run
         return HOME_RUN;
