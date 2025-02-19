@@ -29,7 +29,7 @@ using namespace std;
 
 //Need two enumerated types.
 //Remember that multiple enumerated types cannot share the same value name.
-enum PlayResult { HOME_RUN, DOUBLE, TRIPLE, SINGLE, WALK, FLY_OUT, POP_OUT, DOUBLE_PLAY, GROUND_OUT, STRIKE_OUT, SACRIFICE_FLY, INVALID};
+enum PlayResult { HOME_RUN, DOUBLE, TRIPLE, SINGLE, WALK, FLY_OUT, POP_OUT, DOUBLE_PLAY, GROUND_OUT, STRIKE_OUT, SACRIFICE_FLY};
 enum GeneratedPlayType { HIT, BB, OUT};
 
 //functions:
@@ -98,15 +98,11 @@ PlayResult getPlay(int dice1, int dice2){
         // Strike Out
         return STRIKE_OUT;
     } 
-    else if ((dice1 == 5 && dice2 == 6) || (dice1 == 6 && dice2 == 5)) {
+    else {
         // Sacrifice Fly
         return SACRIFICE_FLY;
     } 
-    else {
-        // Invalid play
-        cout << "Invalid play detected." << endl;
-        return INVALID;
-    }
+
 }
 //takes in two integer values that represent the rolling of two dice and
 //determines the correct play.  It prints out the play via a call to 
