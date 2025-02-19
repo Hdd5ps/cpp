@@ -13,7 +13,7 @@
 
 using namespace std;
 
-//side-note: when the above libaries are included here, you don't necessarily
+//side-note: when the above libraries are included here, you don't necessarily
 //have to include them in other files of the program.
 
 #ifndef ASSIGNMENT5_H 
@@ -29,7 +29,7 @@ using namespace std;
 
 //Need two enumerated types.
 //Remember that multiple enumerated types cannot share the same value name.
-enum PlayResult { HOME_RUN, DOUBLE, TRIPLE, SINGLE, WALK, FLY_OUT, POP_OUT, DOUBLE_PLAY, GROUND_OUT, STRIKE_OUT, SACRIFICE_FLY};
+enum PlayResult { HOME_RUN, DOUBLE, TRIPLE, SINGLE, WALK, FLY_OUT, POP_OUT, DOUBLE_PLAY, GROUND_OUT, STRIKE_OUT, SACRIFICE_FLY, INVALID};
 enum GeneratedPlayType { HIT, BB, OUT};
 
 //functions:
@@ -37,15 +37,14 @@ enum GeneratedPlayType { HIT, BB, OUT};
 void initialize(){
     srand(time(0));
 }
-//takes no arguments.  It's only purpose is to set the seed for the random
+//takes no arguments.  Its only purpose is to set the seed for the random
 //number generator.
 
-
 bool isValid(int arg){
-    if (arg<1){
+    if (arg < 1){
         return false;
     }
-    else if (arg>6){
+    else if (arg > 6){
         return false;
     }
     else{
@@ -54,7 +53,6 @@ bool isValid(int arg){
 }
 //takes in a single integer argument.  If it's within the proper range of the
 //value of a six-sided die, it returns true.  If not, it returns false.
-void printPlayResult(PlayResult);
 
 PlayResult getPlay(int dice1, int dice2){
     isValid(dice1);
@@ -64,67 +62,61 @@ PlayResult getPlay(int dice1, int dice2){
         // Home Run
         return HOME_RUN;
     } 
-
     else if ((dice1 == 1 && dice2 == 2) || (dice1 == 2 && dice2 == 1) || (dice1 == 5 && dice2 == 5)) {
         // Double
         return DOUBLE;
     } 
-
     else if ((dice1 == 3 && dice2 == 4) || (dice1 == 4 && dice2 == 3)) {
         // Triple
         return TRIPLE;
     } 
-
     else if ((dice1 == 1 && dice2 == 6) || (dice1 == 6 && dice2 == 1) || (dice1 == 2 && dice2 == 5) || (dice1 == 5 && dice2 == 2)) {
+        // Single
         return SINGLE;
     } 
-
     else if ((dice1 == 1 && dice2 == 4) || (dice1 == 4 && dice2 == 1) || (dice1 == 3 && dice2 == 3) || (dice1 == 4 && dice2 == 4)) {
         // Walk
         return WALK;
     } 
-
     else if ((dice1 == 1 && dice2 == 3) || (dice1 == 3 && dice2 == 1) || (dice1 == 3 && dice2 == 6) || (dice1 == 6 && dice2 == 3)) {
         // Fly Out
         return FLY_OUT;
     } 
-    
     else if ((dice1 == 1 && dice2 == 5) || (dice1 == 5 && dice2 == 1) || (dice1 == 4 && dice2 == 5) || (dice1 == 5 && dice2 == 4)) {
         // Pop Out
         return POP_OUT;
     } 
-    
     else if (dice1 == 2 && dice2 == 2) {
         // Double Play
         return DOUBLE_PLAY;
     } 
-    
     else if ((dice1 == 2 && dice2 == 3) || (dice1 == 3 && dice2 == 2) || (dice1 == 3 && dice2 == 5) || (dice1 == 5 && dice2 == 3)) {
         // Ground Out
         return GROUND_OUT;
     } 
-    
     else if ((dice1 == 2 && dice2 == 4) || (dice1 == 4 && dice2 == 2) || (dice1 == 4 && dice2 == 6) || (dice1 == 6 && dice2 == 4) || (dice1 == 2 && dice2 == 6) || (dice1 == 6 && dice2 == 2)) {
         // Strike Out
         return STRIKE_OUT;
     } 
-    
     else if ((dice1 == 5 && dice2 == 6) || (dice1 == 6 && dice2 == 5)) {
         // Sacrifice Fly
         return SACRIFICE_FLY;
     } 
-
-    printPlayResult(getPlay(dice1, dice2));
+    else {
+        // Invalid play
+        cout << "Invalid play detected." << endl;
+        return INVALID;
+    }
 }
-//takes in two integer values that represents the rolling of two dice and
+//takes in two integer values that represent the rolling of two dice and
 //determines the correct play.  It prints out the play via a call to 
 //printPlay, and returns the determined play result.  You should probably
 //make a call to the function that determines if a value "rolled" is
 //valid.
 
-void printPlayResult(PlayResult)
+void printPlayResult(PlayResult i)
 {
-    switch (PlayResult) {
+    switch (i) {
         case HOME_RUN:
             cout << "Home Run" << endl;
             break;
@@ -178,66 +170,49 @@ void printPlayResult(PlayResult)
 
 PlayResult roll()
 {
-    int dice1, dice2;
-    cout << "Enter the first die value: ";
-    cin >> dice1;
+    // Initialize the random number generator
+    initialize();
 
-    cout << "Enter the second die value: ";
-    cin >> dice2;
+    // Generate the first random number between 1 and 6
+    int rolledValue1 = rand() % 6 + 1;
 
-    string Play = getPlay(dice1, dice2);
-    return Play;
+    // Generate the second random number between 1 and 6
+    int rolledValue2 = rand() % 6 + 1;
+
+    // Ensure the two numbers are different
+    while (rolledValue1 == rolledValue2) {
+        rolledValue2 = rand() % 6 + 1;
+    }
+
+    return getPlay(rolledValue1, rolledValue2);
 }
 //simulates the rolling of two dice and makes a call to getPlay and returns
 //the value returned by getPlay
 
-GeneratedPlayType scorePlay(PlayResult){
-    switch (PlayResult){
-        return HIT;
-        break;
+GeneratedPlayType scorePlay(PlayResult i){
+    switch (i){
+        case HOME_RUN:
+        case DOUBLE:
+        case TRIPLE:
+        case SINGLE:
+            return HIT;
+            break;
 
-    case DOUBLE:
-        return HIT;
-        break;
+        case WALK:
+            return BB;
+            break;
 
-    case TRIPLE:
-        return HIT;
-        break;
+        case FLY_OUT:
+        case POP_OUT:
+        case DOUBLE_PLAY:
+        case GROUND_OUT:
+        case STRIKE_OUT:
+        case SACRIFICE_FLY:
+            return OUT;
+            break;
 
-    case SINGLE:
-        return HIT;
-        break;
-
-    case WALK:
-        return BB;
-        break;
-
-    case FLY_OUT:
-        return OUT;
-        break;
-
-    case POP_OUT:
-        return OUT;
-        break;
-
-    case DOUBLE_PLAY:
-        return OUT;
-        break;
-
-    case GROUND_OUT:
-        return OUT;
-        break;
-
-    case STRIKE_OUT:
-        return OUT;
-        break;
-
-    case SACRIFICE_FLY:
-        return OUT;
-        break;
-
-    default :
-        break;
+        default:
+            break;
     }
 }
 //given the value of the PlayResult argument passed in, it returns the
@@ -245,9 +220,6 @@ GeneratedPlayType scorePlay(PlayResult){
 //anything with the word out in it is an out, as is sac fly and double play.
 //the word walk means a walk
 //anything else is considered a hit.
-
-
-
 
 #endif
 //signifies the end of the #ifndef from above.
