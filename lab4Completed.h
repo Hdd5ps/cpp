@@ -4,6 +4,14 @@ using namespace std;
 #ifndef LAB4_H
 #define LAB4_H
 /*
+
+Names:
+Kamal Raj Timilsena
+Steven Tyndall
+Piyachote Naphapayarksiri
+Fal Elgizouli
+
+
 It's getting close to the end of the semester, and you're looking to 
 determine grades for one of your classes.  The class in question has the 
 following grade components:
@@ -41,9 +49,9 @@ need to make as you write these functions.
 */
 
 void average(double& pointsEarned){
-   int Total = 0;
    int count = 0;
-   int userInput = 0;
+   double Total = 0;
+   double userInput = 0;
    
    while (userInput != -1) {
        cout<<"Enter a grade (or -1 to stop): ";
@@ -57,6 +65,7 @@ void average(double& pointsEarned){
        
    if (count == 0) {
        pointsEarned = 0; // Prevent division by zero if no scores are entered
+      return;
    }
 
    pointsEarned = Total / count;
@@ -174,8 +183,8 @@ the above should be returned as a reference parameter.
 void printAverage(double score, gradeComponent g){
    double weight;
    getWeight(g, weight);
-   int currentAverage = score / (1 - weight);
-   cout<<"Current Average: "<<currentAverage<<endl;
+   double currentAverage = score / (1 - weight);
+   cout<<"Current Average: "<< currentAverage<<endl;
    cout<<endl;
 }   
 /* 
