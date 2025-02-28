@@ -184,7 +184,7 @@ void printAverage(double score, gradeComponent g){
    double weight;
    getWeight(g, weight);
    double currentAverage = score / (1 - weight);
-   cout<<"Current Average: "<< currentAverage<<endl;
+   cout<<"Current Average: "<< currentAverage <<endl;
    cout<<endl;
 }   
 /* 
