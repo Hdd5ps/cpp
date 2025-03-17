@@ -3,9 +3,10 @@
 #include <ctime>
 using namespace std;
 
-#ifndef ASSIGNMENT5_H
-#define ASSIGNMENT5_H
+#ifndef ASSIGNMENT6_H
+#define ASSIGNMENT6_H
 
+// Enumeration for play results
 enum PlayResult
 {
     NONE,
@@ -22,39 +23,42 @@ enum PlayResult
     DOUBLE_PLAY
 };
 
+// Enumeration for generated play types
 enum GeneratedPlayType
 {
     NOT,
     BB,
     HIT,
-    OUT,
-    SAC
+    OUT
 };
 
+// Initialize random number generator
 void initialize()
 {
     srand(time(0));
 }
 
+// Check if the function is within bounds
 bool isValid(int number)
 {
-    // checking the bounds for the given number
+    // Checking the bounds for the given number
     if (number < 1)
-    {                 // one is the lower bound on a six-sided die
-        return false; // if less than 1, invalid
+    {                 // One is the lower bound on a six-sided die
+        return false; // If less than 1, invalid
     }
     else if (number > 6)
-    {                 // six is the upper bound on a six-sided die
-        return false; // if greater than 6, invalid
+    {                 // Six is the upper bound on a six-sided die
+        return false; // If greater than 6, invalid
     }
-    return true; // otherwise, within range
+    return true; // Otherwise, within range
 }
 
+// Determine the play based on two dice
 PlayResult getPlay(int d1, int d2)
 {
-    // assuming d1 is smaller/equal to d2
+    // Assuming d1 is smaller/equal to d2
     PlayResult play = NONE;
-    // check to make sure both d1 and d2 are in bounds...
+    // Check to make sure both d1 and d2 are in bounds...
     if ((!isValid(d1)) || (!isValid(d2)))
     {
         return play;
@@ -62,7 +66,7 @@ PlayResult getPlay(int d1, int d2)
 
     switch (d1)
     {
-    case 1: // first die is a 1
+    case 1: // First die is a 1
         switch (d2)
         {
         case 1:
@@ -85,7 +89,7 @@ PlayResult getPlay(int d1, int d2)
             break;
         }
         break;
-    case 2: // first die is a 2
+    case 2: // First die is a 2
         switch (d2)
         {
         case 2:
@@ -105,7 +109,7 @@ PlayResult getPlay(int d1, int d2)
             break;
         }
         break;
-    case 3: // first die is a 3
+    case 3: // First die is a 3
         switch (d2)
         {
         case 3:
@@ -122,7 +126,7 @@ PlayResult getPlay(int d1, int d2)
             break;
         }
         break;
-    case 4: // first die is a 4
+    case 4: // First die is a 4
         switch (d2)
         {
         case 4:
@@ -136,7 +140,7 @@ PlayResult getPlay(int d1, int d2)
             break;
         }
         break;
-    case 5: // first die is a 5
+    case 5: // First die is a 5
         switch (d2)
         {
         case 5:
@@ -147,7 +151,7 @@ PlayResult getPlay(int d1, int d2)
             break;
         }
         break;
-    case 6: // first die is a 6
+    case 6: // First die is a 6
         switch (d2)
         {
         case 6:
@@ -160,6 +164,7 @@ PlayResult getPlay(int d1, int d2)
     return play;
 }
 
+// Print the play result
 void printPlayResult(PlayResult p)
 {
     switch (p)
@@ -203,32 +208,36 @@ void printPlayResult(PlayResult p)
     }
 }
 
+GeneratedPlayType scorePlay(PlayResult play);
+// Function to roll the dice and determine play
 PlayResult roll(GeneratedPlayType &p)
 {
     int die1, die2, swapValue;
-    int upper = 6, lower = 1;      // range, just looking at upper and lower values
-    int range = upper - lower + 1; // range = upper-lower + 1
+    int upper = 6, lower = 1;      // Range, just looking at upper and lower values
+    int range = upper - lower + 1; // Range = upper-lower + 1
     PlayResult play;
-    die1 = rand() % range; // generate random number
-    die1 += lower;         // add lower bound; repeat for die2
+    die1 = rand() % range; // Generate random number
+    die1 += lower;         // Add lower bound; repeat for die2
     die2 = rand() % range;
     die2 += lower;
 
     if (die1 > die2)
-    { // put lower value first
+    { // Put lower value first
         swapValue = die1;
         die1 = die2;
         die2 = swapValue;
     }
 
-    // determine the play
+    // Determine the play
     play = getPlay(die1, die2);
-    return play; // send back the resulting play to main()
+    p = scorePlay(play); // Determine play type
+    return play;         // Send back the resulting play to main()
 }
 
+// Play type determining function (hit, walk, or out)
 GeneratedPlayType scorePlay(PlayResult play)
 {
-    // determine hit, walk, or out
+    // Determine hit, walk, or out
     GeneratedPlayType gpt = NOT;
     switch (play)
     {
@@ -243,54 +252,58 @@ GeneratedPlayType scorePlay(PlayResult play)
     case STRIKE_OUT:
     case DOUBLE_PLAY:
     case GROUND_OUT:
-        gpt = OUT;
-        break;
     case SAC_FLY:
-        gpt = SAC;
+        gpt = OUT;
         break;
     case WALK:
         gpt = BB;
         break;
-    default: // nothing to do here, just turn off warnings
-        break;
+    default:
+        break; // Nothing to do here, just turn off warnings
     }
 
     return gpt;
 }
 
-void teamBattingAverage(int hits, int atbats, double& battingAverage){
-    battingAverage = hits / atbats;
-    return battingAverage;
+// Calculation for team batting average
+void teamBattingAverage(int hits, int atbats, double &battingAverage)
+{
+    battingAverage = (double)hits / (double)atbats;
 }
 
-void teamOnBasePct(int hits, int walks, int atbats, double& onbase){
-    onbase = (hits + walks) / (atbats + walks)
-    return onbase;
+// Calculation for team on-base percentage
+void teamOnBasePct(int hits, int walks, int atbats, double &onbase)
+{
+    onbase = (double)(hits + walks) / (double)(atbats + walks);
 }
 
-void totalBases(PlayResult p, int& total){
+// Calculate total bases
+void totalBases(PlayResult p, int &total)
+{
     switch (p)
     {
-        case SINGLE:
-            total+=1;
-            break;
-        case DOUBLE:
-            total+=2;
-            break;
-        case TRIPLE:
-            total+=3;
-            break;
-        case HOME_RUN:
-            total+=4;
-            break;
-        default: // nothing to do here, just turn off warnings
-            break;
+    case SINGLE:
+        total += 1;
+        break;
+    case DOUBLE:
+        total += 2;
+        break;
+    case TRIPLE:
+        total += 3;
+        break;
+    case HOME_RUN:
+        total += 4;
+        break;
+    default:
+        break; // Nothing to do here, just turn off warnings
     }
-    return total;
 }
 
-double teamSluggingPercentage(int atBats, int totalBaseCount){
-    int totalBases = totalBaseCount / atBats;
+// Calculate team slugging percentage
+double teamSluggingPercentage(int atBats, int totalBaseCount)
+{
+    double totalBases = (double)totalBaseCount / (double)atBats;
     return totalBases;
 }
+
 #endif
