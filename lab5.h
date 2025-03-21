@@ -30,12 +30,8 @@ double getGradeWeight(Grades g)
       return 0.15;
       break;
 
-   case EXAMS:
+   default: // exams
       return 0.30;
-      break;
-
-   default:
-      return 0.20;
       break;
    }
 }
@@ -57,12 +53,8 @@ void printGradeWeight(Grades g)
       cout << "Quizzes" << endl;
       break;
 
-   case EXAMS:
-      cout << "Exams" << endl;
-      break;
-
    default:
-      cout << "Final Exam" << endl;
+      cout << "Exams" << endl;
       break;
    }
 }
@@ -72,25 +64,34 @@ void printGradeWeight(Grades g)
 // stores the average of a type of grade in the first argument.
 // the array should be organized in the same way you see the different
 // values of Grades listed above.
-void gradePrompt(double array[], Grades g)
+void gradePrompt(double grades[], Grades g)
 {
-   double Total = 0;
+   double grade;
+   double total = 0.0;
    int count = 0;
+   printGradeWeight(g);
 
-   printGradeWeight((Grades)g);
-   while (array[g] != -1)
+   cout << "Enter a grade (or -1 to stop): ";
+   cin >> grade;
+
+   while (grade != -1) // sentinel value to stop input
    {
+      total += grade; // accumulate the total of the grades
+      count++;        // increment the count of grades entered
       cout << "Enter a grade (or -1 to stop): ";
-      cin >> array[g];
-      if (array[g] != -1)
-      {
-         count++;
-         Total += array[g];
-      }
+      cin >> grade;
    }
-   cout << endl;
 
-   array[g] = Total / count;
+   if (count > 0)
+   {
+      grades[g] = total / count; // Store the average grade for the specified type
+   }
+   else
+   {
+      grades[g] = 0.0; // Default to 0 if no grades were entered
+   }
+   cout << endl
+        << endl;
 }
 
 // takes in
@@ -98,6 +99,7 @@ void printGradeAverages(const double array[], const int size)
 {
    for (int i = 0; i < size; i++)
    {
+      printGradeWeight((Grades)i);
       cout << " Average: ";
       cout << array[i] << endl;
    }
@@ -111,51 +113,61 @@ void printGradeAverages(const double array[], const int size)
 // we're not going to modify the array, just read from it, so that's why
 // the array passed in here is declared as a const
 // the second argument is the size of the array
-double pointsEarned(const double gradeComponent[], const int SIZE, double &totalWeight)
+double pointsEarned(const double grades[], const int size, double &totalWeight)
 {
-   totalWeight = 0;
-   double weight = 0;
-   double pointsEarned = 0;
-   for (int i = 0; i < SIZE; i++)
+   double totalPoints = 0.0;
+   totalWeight = 0.0;
+   for (int i = 0; i < size; i++) // iterate through the array
    {
-      // gradePrompt(gradeComponent[i], Grades (gradeComponent[i]));
-      weight = getGradeWeight(Grades(i));
+      double weight = getGradeWeight((Grades)i); // get the weight for the current grade type
+
+      totalPoints += (grades[i] * weight); // calculate the total points earned for this grade type
       totalWeight += weight;
-      pointsEarned = gradeComponent[i] * totalWeight;
-      return pointsEarned;
    }
+   return totalPoints;
 }
 
 // calculates the current course grade.
 // arguments are total number of points and the sum of weights
-double currentGrade(double pointsEarned, double totalWeight)
+double currentGrade(double totalPoints, double totalWeight)
 {
-   double averageGrade = pointsEarned * totalWeight;
-   return averageGrade;
+   return totalPoints / totalWeight; // calculate the current grade
+   // by dividing total points by total weight
 }
 
 // calculates the final exam score needed
 // arguments: desired grade, total number of points, and the total grade
 // weight earned thus far.
-double finalExamScore(double desiredGrade, double totalPoints, double totalGradeWeight)
+double finalExamScore(double desiredGrade, double totalPoints, double totalWeight)
 {
-   desiredGrade -= totalPoints;
-   return (desiredGrade/(1-totalGradeWeight));
+   desiredGrade -= totalPoints;               // subtract the total points from the desired grade
+   return (desiredGrade / (1 - totalWeight)); // calculate the final exam score needed
+   // by dividing the desired grade by the remaining weight
 }
 
 // prints out whether the grade is attainable (<=100)
-void isScoreAttainable(double current_grade){
-   if (current_grade > 100){
-      cout<<"The score cannot be attained"<<endl;
-   } else {
-      cout<<"The score is achievable"<<endl;
+void isScoreAttainable(double current_grade)
+{
+   if (current_grade > 100)
+   {
+      cout << "The score cannot be attained. " << endl
+           << endl;
+   }
+   else
+   {
+      cout << "The score is achievable. " << endl
+           << endl;
    }
 }
 
 // prints out whether the grade has already been earned pre-final exam
-void isScoreAssured(double current_grade){
-if (current_grade < 0){
-   cout<<"The score has already been attained"<<endl; //ation: Check if the grade is less than 0 (cant have a negative total grade
+void isScoreAssured(double current_grade)
+{
+   if (current_grade <= 0)
+   {
+      cout << "The grade has already been earned. " << endl
+           << endl;
+   }
 }
-}
+
 #endif

@@ -1,7 +1,7 @@
 /*
+Kamal
 Tyler
 Max
-Kamal
 */
 //.cc file given for lab 5
 
