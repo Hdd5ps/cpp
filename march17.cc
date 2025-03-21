@@ -94,7 +94,7 @@ void init (int x[], int size){
     }
 }       // conventional thinking: pass by value (no &)
 
-init(intArray, size){ 
+init(intArray, size){
 // no changes kept
 }
 
@@ -110,7 +110,7 @@ if passing an array
 
 x(f[i]){
     int x (int& a){
-    
+
     }
 }
 - looks same as passing by variable
@@ -134,11 +134,11 @@ int main() {
 
     cout<<values<<endl;
     // 0x7fffffffd120
-    
+
     int x;
     cout<<x<<endl;
     // 21845
-    
+
     int value[5] = {0};
     cout<<value<<endl;
     // 0x7fffffffd120
@@ -153,9 +153,24 @@ int main() {
 #include <array>
 using namespace std;
 
-int main() {
-    array<int, 5> n; // n is an array of 5 int values
+int main()
+{
+    // constant variable can be used to specify array size
+    const size_t arraySize = 5; // must initailize in declaration
+    array<int, arraySize> n;    // n is an array of 5 int values
 
     // initialize elements of array n to 0
-    
+    for (size_t i = 0; i < n.size(); i++)
+    {
+        n[i] = 2 + 2 * i; // set element at location i to 0
+    }
+
+    cout << "Element" << setw(13) << "Value" << endl;
+
+    // output contents of array n in tabular format
+    for (size_t j = 0; j < n.size(); j++)
+    {
+        cout << setw(7) << j << setw(13) << n[j] << endl;
+    }
+    return 0;
 }
