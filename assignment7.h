@@ -368,7 +368,10 @@ double onBasePercentage(const int stats[]){
 }
 // calculates (hits+walks)/(at-bats + walks)
 
-double sluggingPercentage(const int[]);
+double sluggingPercentage(const int totalBases[]){
+    // calculates slugging percentage:
+
+}
 // calculates slugging percentage:
 //(singles + (2*doubles) + (3*triples) + (4*homers))/at-Bats
 
