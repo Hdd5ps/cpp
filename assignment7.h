@@ -1,300 +1,12 @@
 #include <iostream>
 #include <fstream>
+#include "assignment6.h"
 // hmmm, with the inclusion of assignment6.h file, it looks like you might be
 // about to - dare I say it - reuse something(s) from the file.
 using namespace std;
 
 #ifndef ASSIGNMENT7_H
 #define ASSIGNMENT7_H
-
-// Enumeration for play results
-enum PlayResult
-{
-    NONE,
-    WALK,
-    SINGLE,
-    DOUBLE,
-    TRIPLE,
-    HOME_RUN,
-    FLY_OUT,
-    SAC_FLY,
-    GROUND_OUT,
-    STRIKE_OUT,
-    POP_OUT,
-    DOUBLE_PLAY
-};
-
-// Enumeration for generated play types
-enum GeneratedPlayType
-{
-    NOT,
-    BB,
-    HIT,
-    OUT
-};
-
-// Check if the function is within bounds
-bool isValid(int number)
-{
-    // Checking the bounds for the given number
-    if (number < 1)
-    {                 // One is the lower bound on a six-sided die
-        return false; // If less than 1, invalid
-    }
-    else if (number > 6)
-    {                 // Six is the upper bound on a six-sided die
-        return false; // If greater than 6, invalid
-    }
-    return true; // Otherwise, within range
-}
-
-// Determine the play based on two dice
-PlayResult getPlay(int d1, int d2)
-{
-    // Assuming d1 is smaller/equal to d2
-    PlayResult play = NONE;
-    // Check to make sure both d1 and d2 are in bounds...
-    if ((!isValid(d1)) || (!isValid(d2)))
-    {
-        return play;
-    }
-
-    switch (d1)
-    {
-    case 1: // First die is a 1
-        switch (d2)
-        {
-        case 1:
-            play = HOME_RUN;
-            break;
-        case 2:
-            play = DOUBLE;
-            break;
-        case 3:
-            play = FLY_OUT;
-            break;
-        case 4:
-            play = WALK;
-            break;
-        case 5:
-            play = POP_OUT;
-            break;
-        case 6:
-            play = SINGLE;
-            break;
-        }
-        break;
-    case 2: // First die is a 2
-        switch (d2)
-        {
-        case 2:
-            play = DOUBLE_PLAY;
-            break;
-        case 3:
-            play = GROUND_OUT;
-            break;
-        case 4:
-            play = STRIKE_OUT;
-            break;
-        case 5:
-            play = SINGLE;
-            break;
-        case 6:
-            play = STRIKE_OUT;
-            break;
-        }
-        break;
-    case 3: // First die is a 3
-        switch (d2)
-        {
-        case 3:
-            play = WALK;
-            break;
-        case 4:
-            play = TRIPLE;
-            break;
-        case 5:
-            play = GROUND_OUT;
-            break;
-        case 6:
-            play = FLY_OUT;
-            break;
-        }
-        break;
-    case 4: // First die is a 4
-        switch (d2)
-        {
-        case 4:
-            play = WALK;
-            break;
-        case 5:
-            play = POP_OUT;
-            break;
-        case 6:
-            play = STRIKE_OUT;
-            break;
-        }
-        break;
-    case 5: // First die is a 5
-        switch (d2)
-        {
-        case 5:
-            play = DOUBLE;
-            break;
-        case 6:
-            play = SAC_FLY;
-            break;
-        }
-        break;
-    case 6: // First die is a 6
-        switch (d2)
-        {
-        case 6:
-            play = HOME_RUN;
-            break;
-        }
-        break;
-    }
-
-    return play;
-}
-
-// Print the play result
-void printPlayResult(PlayResult p)
-{
-    switch (p)
-    {
-    case WALK:
-        cout << "Walk" << endl;
-        break;
-    case SINGLE:
-        cout << "Single" << endl;
-        break;
-    case DOUBLE:
-        cout << "Double" << endl;
-        break;
-    case TRIPLE:
-        cout << "Triple" << endl;
-        break;
-    case HOME_RUN:
-        cout << "Home Run" << endl;
-        break;
-    case FLY_OUT:
-        cout << "Fly Out" << endl;
-        break;
-    case POP_OUT:
-        cout << "Pop Out" << endl;
-        break;
-    case GROUND_OUT:
-        cout << "Ground Out" << endl;
-        break;
-    case STRIKE_OUT:
-        cout << "Strike Out" << endl;
-        break;
-    case DOUBLE_PLAY:
-        cout << "Double Play" << endl;
-        break;
-    case SAC_FLY:
-        cout << "Sacrifice Fly" << endl;
-        break;
-    default:
-        cout << "No play" << endl;
-        break;
-    }
-}
-
-GeneratedPlayType scorePlay(PlayResult play);
-// Function to roll the dice and determine play
-PlayResult roll(GeneratedPlayType &p)
-{
-    int die1, die2, swapValue;
-    int upper = 6, lower = 1;      // Range, just looking at upper and lower values
-    int range = upper - lower + 1; // Range = upper-lower + 1
-    PlayResult play;
-    die1 = rand() % range; // Generate random number
-    die1 += lower;         // Add lower bound; repeat for die2
-    die2 = rand() % range;
-    die2 += lower;
-
-    if (die1 > die2)
-    { // Put lower value first
-        swapValue = die1;
-        die1 = die2;
-        die2 = swapValue;
-    }
-
-    // Determine the play
-    play = getPlay(die1, die2);
-    p = scorePlay(play); // Determine play type
-    return play;         // Send back the resulting play to main()
-}
-
-// Play type determining function (hit, walk, or out)
-GeneratedPlayType scorePlay(PlayResult play)
-{
-    // Determine hit, walk, or out
-    GeneratedPlayType gpt = NOT;
-    switch (play)
-    {
-    case SINGLE:
-    case DOUBLE:
-    case TRIPLE:
-    case HOME_RUN:
-        gpt = HIT;
-        break;
-    case FLY_OUT:
-    case POP_OUT:
-    case STRIKE_OUT:
-    case DOUBLE_PLAY:
-    case GROUND_OUT:
-    case SAC_FLY:
-        gpt = OUT;
-        break;
-    case WALK:
-        gpt = BB;
-        break;
-    default:
-        break; // Nothing to do here, just turn off warnings
-    }
-
-    return gpt;
-}
-
-
-// Calculation for team on-base percentage
-void teamOnBasePct(int hits, int walks, int atbats, double &onbase)
-{
-    onbase = (double)(hits + walks) / (double)(atbats + walks);
-}
-
-// Calculate total bases
-void totalBases(PlayResult p, int &total)
-{
-    switch (p)
-    {
-    case SINGLE:
-    total += 1;
-    break;
-    case DOUBLE:
-    total += 2;
-    break;
-    case TRIPLE:
-        total += 3;
-        break;
-        case HOME_RUN:
-        total += 4;
-        break;
-        default:
-        break; // Nothing to do here, just turn off warnings
-    }
-}
-
-// Calculate team slugging percentage
-double teamSluggingPercentage(int atBats, int totalBaseCount)
-{
-    double totalBases = (double)totalBaseCount / (double)atBats;
-    return totalBases;
-}
 
 // needed to determine the play type to increment.
 enum Statistics
@@ -312,70 +24,80 @@ enum Statistics
 // random number generator
 void initialize(int battersLine[], const int SIZE)
 {
-    srand(time(0)); // seed the random number generator
+    srand(time(0));
     for (int i = 0; i < SIZE; i++)
-    {                       // initialize the array to 0
-        battersLine[i] = 0; // set each element to 0
+    {
+        battersLine[i] = 0;
     }
 }
 // first argument is the array; second is the size of the array
 
-void updateStatLine(PlayResult p, int stats[])
+void updateStatLine(PlayResult p, int battersLine[])
 {
-    // based on the play result, update the player's stats
     switch (p)
     {
-        case SINGLE:
-        stats[SINGLES]++;
+    case SINGLE:
+        battersLine[SINGLES]++;
         break;
-        case DOUBLE:
-        stats[DOUBLES]++;
+    case DOUBLE:
+        battersLine[ATBATS]++;
+        battersLine[DOUBLES]++;
         break;
-        case TRIPLE:
-        stats[TRIPLES]++;
+    case TRIPLE:
+        battersLine[TRIPLES]++;
         break;
-        case HOME_RUN:
-        stats[HOMERS]++;
+    case HOME_RUN:
+        battersLine[ATBATS]++;
+        battersLine[HOMERS]++;
         break;
     case WALK:
-        stats[WALKS]++;
+        battersLine[WALKS]++;
         break;
-        case SAC_FLY:
-        stats[SACFLIES]++;
+    case SAC_FLY:
+        battersLine[SACFLIES]++;
         break;
-        default:
-        break; // no update for other plays
+    case default:
+        break;
     }
 }
 // based on the first argument, update the player's stats where needed.
 
-// Calculation for team batting average
-void teamBattingAverage(int hits, int atbats, double &battingAverage)
+double battingAverage(const int stats[])
 {
-    battingAverage = (double)hits / (double)atbats;
-}
-double battingAverage(const int stats[]){
-// calculates the batting average:
-// hits/at-bats
-    return (double)stats[SINGLES] + (double)stats[DOUBLES] + (double)stats[TRIPLES] + (double)stats[HOMERS] / (double)(stats[ATBATS]);
+    if (stats[ATBATS] == 0){
+        return 0.0; // Prevent division by zero  
+    }
+    else{
+        return (double)(stats[SINGLES] + stats[DOUBLES] + stats[TRIPLES] + stats[HOMERS]) / (double)stats[ATBATS];
+    }
 }
 // calculates the total number of hits divided by the total number of at-bats
 
 double onBasePercentage(const int stats[]){
-// calculates on-base percentage:
-// (hits + walks)/(at-bats + walks)
-    return (double)(stats[SINGLES] + stats[DOUBLES] + stats[TRIPLES] + stats[HOMERS] + stats[WALKS]) / (double)(stats[ATBATS] + stats[WALKS]);
+    if (stats[ATBATS] + stats[WALKS] == 0){
+        return 0.0; // Prevent division by zero
+    }
+    else{
+        return (double)(stats[SINGLES] + stats[DOUBLES] + stats[TRIPLES] + stats[HOMERS] + stats[WALKS]) / (double)(stats[ATBATS] + stats[WALKS]);
+    }
 }
 // calculates (hits+walks)/(at-bats + walks)
 
-double sluggingPercentage(const int totalBases[]){
-    // calculates slugging percentage:
-
+double sluggingPercentage(const int stats[]){
+    return (double)(stats[SINGLES] + (2*stats[DOUBLES]) + (3*stats[TRIPLES]) + (4*stats[HOMERS])) / (double)stats[ATBATS];
 }
 // calculates slugging percentage:
 //(singles + (2*doubles) + (3*triples) + (4*homers))/at-Bats
 
-void printStatsToFile(const int[], const int);
+void printStatsToFile(const int stats[], const int){
+    ofstream outfile;
+    outfile.open("a7stats.txt");
+    outfile << "At Bats: " << stats[ATBATS] << endl;
+    outfile << "Batting Average: " << battingAverage(stats) << endl;
+    outfile << "On Base Percentage: " << onBasePercentage(stats) << endl;
+    outfile << "Slugging Percentage: " << sluggingPercentage(stats) << endl;
+    outfile.close();
+}
 // prints all of the stats to the file a7stats.txt.
 // you should probably check out the description file for all
 // that you'll need to include.

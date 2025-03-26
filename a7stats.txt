@@ -1,0 +1,10 @@
+At-Bats: 4
+Singles: 1
+Doubles: 1
+Triples: 1
+Home Runs: 1
+Walks: 1
+Sacrifice Flies: 0
+Batting Average: 1
+On-Base Percentage: 1.27989e-152
+Slugging Percentage: 2.5
