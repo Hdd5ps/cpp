@@ -170,37 +170,48 @@ void printPlayResult(PlayResult p)
     switch (p)
     {
     case WALK:
-        cout << "Walk\n" << endl;
+        cout << "Walk\n"
+             << endl;
         break;
     case SINGLE:
-        cout << "Single\n" << endl;
+        cout << "Single\n"
+             << endl;
         break;
     case DOUBLE:
-        cout << "Double\n" << endl;
+        cout << "Double\n"
+             << endl;
         break;
     case TRIPLE:
-        cout << "Triple\n" << endl;
+        cout << "Triple\n"
+             << endl;
         break;
     case HOME_RUN:
-        cout << "Home Run\n" << endl;
+        cout << "Home Run\n"
+             << endl;
         break;
     case FLY_OUT:
-        cout << "Fly Out\n" << endl;
+        cout << "Fly Out\n"
+             << endl;
         break;
     case POP_OUT:
-        cout << "Pop Out\n" << endl;
+        cout << "Pop Out\n"
+             << endl;
         break;
     case GROUND_OUT:
-        cout << "Ground Out\n" << endl;
+        cout << "Ground Out\n"
+             << endl;
         break;
     case STRIKE_OUT:
-        cout << "Strike Out\n" << endl;
+        cout << "Strike Out\n"
+             << endl;
         break;
     case DOUBLE_PLAY:
-        cout << "Double Play\n" << endl;
+        cout << "Double Play\n"
+             << endl;
         break;
     default:
-        cout << "Sacrifice Fly\n" << endl;
+        cout << "Sacrifice Fly\n"
+             << endl;
         break;
     }
 }
@@ -228,7 +239,7 @@ PlayResult roll(GeneratedPlayType &p)
     // Determine the play
     play = getPlay(die1, die2);
     scorePlay(play);
-    return play;         // Send back the resulting play to main()
+    return play; // Send back the resulting play to main()
 }
 
 // Play type determining function (hit, walk, or out)

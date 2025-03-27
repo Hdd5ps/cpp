@@ -1,10 +1,10 @@
-At Bats: 3
+At Bats: 9
 Singles: 1
-Doubles: 1
+Doubles: 0
 Triples: 1
-Home Runs: 0
+Home Runs: 1
 Walks: 1
-Sacrifice Flies: 6
-Batting Average: 1
-On Base Percentage: 1
-Slugging Percentage: 2
+Sacrifice Flies: 0
+Batting Average: 0.333333
+On Base Percentage: 0.4
+Slugging Percentage: 0.888889

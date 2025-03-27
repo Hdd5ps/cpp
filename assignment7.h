@@ -11,52 +11,57 @@ using namespace std;
 // needed to determine the play type to increment.
 enum Statistics
 {
-    ATBATS = 0,
-    SINGLES = 1,
-    DOUBLES = 2,
-    TRIPLES = 3,
-    HOMERS = 4,
-    WALKS = 5,
-    SACFLIES = 6
+    ATBATS,
+    SINGLES,
+    DOUBLES,
+    TRIPLES,
+    HOMERS,
+    WALKS,
+    SACFLIES
 };
 
 // initializes the array, as well as sets up the seed for the
 // random number generator
 void initialize(int battersLine[], const int SIZE)
 {
-    srand(time(0));
+    srand(time(0)); // Seed the random number generator
     for (int i = 0; i < SIZE; i++)
     {
-        battersLine[i] = 0;
+        battersLine[i] = 0; // Initialize all elements to 0
     }
 }
 // first argument is the array; second is the size of the array
 
 void updateStatLine(PlayResult p, int battersLine[])
 {
+    battersLine[ATBATS] = battersLine[ATBATS] + 1;
     switch (p)
     {
     case SINGLE:
         battersLine[SINGLES] = battersLine[SINGLES] + 1;
-        battersLine[ATBATS] = battersLine[ATBATS] + 1;
         break;
     case DOUBLE:
-        battersLine[ATBATS] = battersLine[ATBATS] + 1;
         battersLine[DOUBLES] = battersLine[DOUBLES] + 1;
         break;
     case TRIPLE:
         battersLine[TRIPLES] = battersLine[TRIPLES] + 1;
-        battersLine[ATBATS] = battersLine[ATBATS] + 1;
         break;
     case HOME_RUN:
-        battersLine[ATBATS] = battersLine[ATBATS] + 1;
         battersLine[HOMERS] = battersLine[HOMERS] + 1;
         break;
     case WALK:
         battersLine[WALKS] = battersLine[WALKS] + 1;
+        battersLine[ATBATS] = battersLine[ATBATS] - 1;
+        break;
+    case FLY_OUT:
+    case POP_OUT:
+    case STRIKE_OUT:
+    case DOUBLE_PLAY:
+    case GROUND_OUT:
         break;
     default:
         battersLine[SACFLIES] = battersLine[SACFLIES] + 1;
+        battersLine[ATBATS] = battersLine[ATBATS] - 1;
         break;
     }
 }
@@ -70,22 +75,22 @@ double battingAverage(const int stats[])
     }
     else
     {
-        double batAvg = (double)(stats[SINGLES] + stats[DOUBLES] + stats[TRIPLES] + stats[HOMERS]) / (double)stats[ATBATS];
-        return batAvg;
+        double avg = (double)(stats[SINGLES] + stats[DOUBLES] + stats[TRIPLES] + stats[HOMERS]) / (double)stats[ATBATS];
+        return avg;
     }
 }
 // calculates the total number of hits divided by the total number of at-bats
 
 double onBasePercentage(const int stats[])
 {
-    if (stats[ATBATS] + stats[WALKS] == 0)
+    if (stats[ATBATS] + stats[WALKS] + stats[SACFLIES] == 0)
     {
         return 0.0; // Prevent division by zero
     }
     else
     {
-        double obBase = (double)(stats[SINGLES] + stats[DOUBLES] + stats[TRIPLES] + stats[HOMERS] + stats[WALKS]) / (double)(stats[ATBATS] + stats[WALKS]);
-        return obBase;
+        double obp = (double)(stats[SINGLES] + stats[DOUBLES] + stats[TRIPLES] + stats[HOMERS] + stats[WALKS]) / (double)(stats[ATBATS] + stats[WALKS]);
+        return obp;
     }
 }
 // calculates (hits+walks)/(at-bats + walks)
@@ -108,7 +113,7 @@ double sluggingPercentage(const int stats[])
 void printStatsToFile(const int stats[], const int size)
 {
     ofstream outfile;
-    outfile.open("a7stats.txt");
+    outfile.open("a7stats.txt"); // Open file for writing
     outfile << "At Bats: " << stats[ATBATS] << endl;
     outfile << "Singles: " << stats[SINGLES] << endl;
     outfile << "Doubles: " << stats[DOUBLES] << endl;
@@ -119,7 +124,7 @@ void printStatsToFile(const int stats[], const int size)
     outfile << "Batting Average: " << battingAverage(stats) << endl;
     outfile << "On Base Percentage: " << onBasePercentage(stats) << endl;
     outfile << "Slugging Percentage: " << sluggingPercentage(stats) << endl;
-    outfile.close();
+    outfile.close(); // Close file
 }
 // prints all of the stats to the file a7stats.txt.
 // you should probably check out the description file for all
@@ -131,9 +136,9 @@ void playBall(int stats[], const int size)
     GeneratedPlayType playOutcome; // determine if hit, walk, out
     for (int i = 0; i < 10; i++)
     {
-        play = roll(playOutcome);
+        play = roll(playOutcome); // roll the dice
         cout << "Play: ";
-        printPlayResult(play);
+        printPlayResult(play); // print the play
         updateStatLine(play, stats);
     }
 }
