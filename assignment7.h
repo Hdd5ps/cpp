@@ -83,7 +83,7 @@ double battingAverage(const int stats[])
 
 double onBasePercentage(const int stats[])
 {
-    if (stats[ATBATS] + stats[WALKS] + stats[SACFLIES] == 0)
+    if (stats[ATBATS] + stats[WALKS] == 0)
     {
         return 0.0; // Prevent division by zero
     }
