@@ -52,39 +52,41 @@ void initialize(int battingOrder[][7], const int ROW_SIZE, const int COL_SIZE, s
 // the play "rolled"
 // 2D array of stats
 // index for the particular batter's information we're updating.
-void updateStatLine(PlayResult play, int stats[][7], const int index)
+void updateStatLine(PlayResult p, Player *pl, const int index)
 {
-    // increment the number of at-bats
-    stats[index][ATBATS]++;
-
-    // increment the appropriate statistic based on the play result
-    switch (play)
+    // Update the player's stats based on the PlayResult
+    switch (p)
     {
     case SINGLE:
-        stats[index][SINGLES]++;
+        pl[index].singles++;
+        pl[index].atBats++; // Singles count as an at-bat
         break;
     case DOUBLE:
-        stats[index][DOUBLES]++;
+        pl[index].doubles++;
+        pl[index].atBats++; // Doubles count as an at-bat
         break;
     case TRIPLE:
-        stats[index][TRIPLES]++;
+        pl[index].triples++;
+        pl[index].atBats++; // Triples count as an at-bat
         break;
     case HOME_RUN:
-        stats[index][HOMERS]++;
+        pl[index].homers++;
+        pl[index].atBats++; // Home runs count as an at-bat
         break;
     case WALK:
-        stats[index][WALKS]++;
-        stats[index][ATBATS]--;
+        pl[index].walks++; // Walks do not count as an at-bat
+        break;
+    case SAC_FLY:
+        pl[index].sacflies++; // Sacrifice flies do not count as an at-bat
         break;
     case FLY_OUT:
-    case POP_OUT:
-    case STRIKE_OUT:
-    case DOUBLE_PLAY:
     case GROUND_OUT:
+    case STRIKE_OUT:
+    case POP_OUT:
+    case DOUBLE_PLAY:
+        pl[index].atBats++; // Outs count as an at-bat
         break;
     default:
-        stats[index][SACFLIES]++;
-        stats[index][ATBATS]--;
         break;
     }
 }
