@@ -1,4 +1,6 @@
 /*
+
+// april 14, 2o25 and april 16
 Create a class called Fraction
 -add
 -subtract
@@ -10,6 +12,40 @@ Create a class called Fraction
 */
 #include <iostream>
 using namespace std;
+
+/*
+friends - C++ thing
+have access to non-public members of a class. (public, private, protected)
+(protected comes into play with inheritance, so hold that thought)
+friend functions
+friend classes
+
+friend function - a function that is not a member of the class but has access to its private and protected members.
+used for efficiency and convenience.
+
+OOP - encapsulation, data hiding, show data as programmer wants to see it
+Encapsulation - the bundling of data with the methods that operate on that data.
+Data hiding - restricting access to the internal representation of an object.
+
+where written?
+in the class: friend function prototype (functions)
+friend class X (classes)
+
+coupling - the degree of interdependence between software modules.(degree to which one class/function knows the business of another class/function )
+cohesion - the degree to which the elements inside a module belong together.(degree of reliances on just calling objects to do what is requested)
+
+loose coupling, strong cohesion
+loose coupling - the degree to which one class/function knows the business of another class/function
+strong cohesion - the degree to which the elements inside a module belong together.
+*/
+
+/*
+Operator Overloading
+Operator overloading is a feature in C++ that allows you to redefine the way operators work for user-defined types (classes). 
+This means you can specify how operators like +, -, *, /, etc., behave when applied to objects of your class.
+This is done by defining special member functions or friend functions in your class. For example, you can overload
+ the + operator to add two objects of a class together, or the << operator to print an object to an output stream.
+*/
 
 class Fraction
 {
@@ -151,6 +187,13 @@ public: // methods (some exceptions)
         cout << getNumerator() << "/" << getDenominator() << endl;
     }
 
+    // friend f(Fraction); // friend + function prototype
+    friend Fraction operator+(const Fraction &f);
+    // c = a + b
+    // a = the object itself
+    // b = the argument passed to the function
+    // c = the object returned by the function
+
 private: // data (some exceptions - methods that don't bring usefulness to class' client)
     void reduce()
     {
@@ -174,6 +217,22 @@ private: // data (some exceptions - methods that don't bring usefulness to class
     int numerator, denominator; // data members
 };
 
+Fraction operator+(const Fraction &f1, const Fraction &f2)
+{
+    // add two fractions
+    // n1/d1 + n2/d2 = (n1*d2 + n2*d1)/(d1*d2)
+
+    Fraction result;
+    int tempNumerator1, tempNumerator2, tempDenominator;
+    tempNumerator1 = f1.getNumerator() * f2.getDenominator();
+    tempNumerator2 = f2.getNumerator() * f1.getDenominator();
+    tempDenominator = f1.getDenominator() * f2.getDenominator();
+    result.setNumerator(tempNumerator1 + tempNumerator2);
+    result.setDenominator(tempDenominator);
+    result.reduce(); // reduce fraction to lowest form
+    return result; // return the result
+}
+
 int main()
 {
     Fraction f1(1, 2), f2(1, 4);
@@ -188,6 +247,7 @@ int main()
     cout << "------------------------" << endl;
 
     Fraction f3(2, 3);
+    f3.print();
     f1.multiplication(f3);
     f1.print();
     cout << "Decimal equivalent: " << f1.decimalEquivalent() << endl;
