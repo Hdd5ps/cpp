@@ -90,16 +90,53 @@ public: // methods (some exceptions)
     void subtraction(Fraction f)
     {
         // subtract two fractions
+        // n1/d1 - n2/d2 = (n1*d2 - n2*d1)/(d1*d2)
+
+        int tempNumerator1, tempNumerator2, tempDenominator;
+
+        tempNumerator1 = getNumerator() * f.getDenominator();
+        // an object of fraction has called subtraction, with an argument of f -> object.subtraction(f)
+
+        tempNumerator2 = f.getNumerator() * getDenominator();
+
+        tempDenominator = getDenominator() * f.getDenominator();
+
+        setNumerator(tempNumerator1 - tempNumerator2);
+        setDenominator(tempDenominator);
+
+        reduce(); // reduce fraction to lowest form
     }
 
     void multiplication(Fraction f)
     {
         // multiplication two fractions
+        // n1/d1 * n2/d2 = (n1*n2)/(d1*d2)
+        int tempNumerator, tempDenominator;
+
+        tempNumerator = getNumerator() * f.getNumerator();
+
+        tempDenominator = getDenominator() * f.getDenominator();
+
+        setNumerator(tempNumerator);
+        setDenominator(tempDenominator);
+
+        reduce(); // reduce fraction to lowest form
     }
 
     void division(Fraction f)
     {
         // division two fractions
+        // n1/d1 / n2/d2 = n1/d1 * d2/n2 = (n1*d2)/(d1*n2)
+        int tempNumerator, tempDenominator;
+
+        tempNumerator = getNumerator() * f.getDenominator();
+
+        tempDenominator = getDenominator() * f.getNumerator();
+
+        setNumerator(tempNumerator);
+        setDenominator(tempDenominator);
+
+        reduce(); // reduce fraction to lowest form
     }
 
     double decimalEquivalent()
@@ -143,5 +180,23 @@ int main()
     f1.addition(f2);
     f1.print();
     cout << "Decimal equivalent: " << f1.decimalEquivalent() << endl;
+    cout << "------------------------" << endl;
+
+    f1.subtraction(f2);
+    f1.print();
+    cout << "Decimal equivalent: " << f1.decimalEquivalent() << endl;
+    cout << "------------------------" << endl;
+
+    Fraction f3(2, 3);
+    f1.multiplication(f3);
+    f1.print();
+    cout << "Decimal equivalent: " << f1.decimalEquivalent() << endl;
+    cout << "------------------------" << endl;
+
+    f1.division(f3);
+    f1.print();
+    cout << "Decimal equivalent: " << f1.decimalEquivalent() << endl;
+    cout << "------------------------" << endl;
+
     return 0;
 }
