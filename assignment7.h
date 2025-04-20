@@ -1,8 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 #include "assignment6.h"
-// hmmm, with the inclusion of assignment6.h file, it looks like you might be
-// about to - dare I say it - reuse something(s) from the file.
 using namespace std;
 
 #ifndef ASSIGNMENT7_H
@@ -11,139 +10,131 @@ using namespace std;
 // needed to determine the play type to increment.
 enum Statistics
 {
-    ATBATS,
-    SINGLES,
-    DOUBLES,
-    TRIPLES,
-    HOMERS,
-    WALKS,
-    SACFLIES
+   ATBATS,
+   SINGLES,
+   DOUBLES,
+   TRIPLES,
+   HOMERS,
+   WALKS,
+   SACFLIES
 };
 
-// initializes the array, as well as sets up the seed for the
-// random number generator
-void initialize(int battersLine[], const int SIZE)
+// calls the older initialize, but also sets all of the values of the array
+// we're using to keep track of stats
+void initialize(int array[], const int size)
 {
-    srand(time(0)); // Seed the random number generator
-    for (int i = 0; i < SIZE; i++)
-    {
-        battersLine[i] = 0; // Initialize all elements to 0
-    }
+   initialize(); // calling assignment6's initialize
+   for (int i = 0; i < size; i++)
+   {
+      array[i] = 0;
+   }
 }
-// first argument is the array; second is the size of the array
 
-void updateStatLine(PlayResult p, int battersLine[])
+void updateStatLine(PlayResult p, int a[])
 {
-    battersLine[ATBATS] = battersLine[ATBATS] + 1;
-    switch (p)
-    {
-    case SINGLE:
-        battersLine[SINGLES] = battersLine[SINGLES] + 1;
-        break;
-    case DOUBLE:
-        battersLine[DOUBLES] = battersLine[DOUBLES] + 1;
-        break;
-    case TRIPLE:
-        battersLine[TRIPLES] = battersLine[TRIPLES] + 1;
-        break;
-    case HOME_RUN:
-        battersLine[HOMERS] = battersLine[HOMERS] + 1;
-        break;
-    case WALK:
-        battersLine[WALKS] = battersLine[WALKS] + 1;
-        battersLine[ATBATS] = battersLine[ATBATS] - 1;
-        break;
-    case FLY_OUT:
-    case POP_OUT:
-    case STRIKE_OUT:
-    case DOUBLE_PLAY:
-    case GROUND_OUT:
-        break;
-    default:
-        battersLine[SACFLIES] = battersLine[SACFLIES] + 1;
-        battersLine[ATBATS] = battersLine[ATBATS] - 1;
-        break;
-    }
+   switch (p)
+   {
+      // update the appropriate counters based on the play received.
+   case SAC_FLY:
+      a[(int)SACFLIES]++;
+      break;
+   case WALK:
+      a[(int)WALKS]++;
+      break;
+   case SINGLE:
+      a[(int)SINGLES]++;
+      a[(int)ATBATS]++;
+      break;
+   case DOUBLE:
+      a[(int)DOUBLES]++;
+      a[(int)ATBATS]++;
+      break;
+   case TRIPLE:
+      a[(int)TRIPLES]++;
+      a[(int)ATBATS]++;
+      break;
+   case HOME_RUN:
+      a[(int)HOMERS]++;
+      a[(int)ATBATS]++;
+      break;
+   default:
+      a[(int)ATBATS]++;
+      break;
+   }
+   return;
 }
-// based on the first argument, update the player's stats where needed.
 
-double battingAverage(const int stats[])
+double battingAverage(const int array[])
 {
-    if (stats[ATBATS] == 0)
-    {
-        return 0.0; // Prevent division by zero
-    }
-    else
-    {
-        double avg = (double)(stats[SINGLES] + stats[DOUBLES] + stats[TRIPLES] + stats[HOMERS]) / (double)stats[ATBATS];
-        return avg;
-    }
+   int hits = 0;
+   /*for(Statistics s = SINGLES; s<=HOMERS; (Statistics)(((int)s)++){
+      hits += array[(int)s];
+   }
+   */
+   hits += array[(int)SINGLES];
+   hits += array[(int)DOUBLES];
+   hits += array[(int)TRIPLES];
+   hits += array[(int)HOMERS];
+   return (double)hits / array[(int)ATBATS];
 }
-// calculates the total number of hits divided by the total number of at-bats
 
-double onBasePercentage(const int stats[])
+double onBasePercentage(const int array[])
 {
-    if (stats[ATBATS] + stats[WALKS] == 0)
-    {
-        return 0.0; // Prevent division by zero
-    }
-    else
-    {
-        double obp = (double)(stats[SINGLES] + stats[DOUBLES] + stats[TRIPLES] + stats[HOMERS] + stats[WALKS]) / (double)(stats[ATBATS] + stats[WALKS]);
-        return obp;
-    }
-}
-// calculates (hits+walks)/(at-bats + walks)
+   int sum = 0;
+   sum += array[(int)SINGLES];
+   sum += array[(int)DOUBLES];
+   sum += array[(int)TRIPLES];
+   sum += array[(int)HOMERS];
+   sum += array[(int)WALKS];
 
-double sluggingPercentage(const int stats[])
-{
-    if (stats[ATBATS] == 0)
-    {
-        return 0.0; // Prevent division by zero
-    }
-    else
-    {
-        double slug = (double)(stats[SINGLES] + (2 * stats[DOUBLES]) + (3 * stats[TRIPLES]) + (4 * stats[HOMERS])) / (double)stats[ATBATS];
-        return slug;
-    }
+   return (double)sum / (array[(int)ATBATS] + array[(int)WALKS]);
 }
-// calculates slugging percentage:
-//(singles + (2*doubles) + (3*triples) + (4*homers))/at-Bats
 
-void printStatsToFile(const int stats[], const int size)
+double sluggingPercentage(const int array[])
 {
-    ofstream outfile;
-    outfile.open("a7stats.txt"); // Open file for writing
-    outfile << "At Bats: " << stats[ATBATS] << endl;
-    outfile << "Singles: " << stats[SINGLES] << endl;
-    outfile << "Doubles: " << stats[DOUBLES] << endl;
-    outfile << "Triples: " << stats[TRIPLES] << endl;
-    outfile << "Home Runs: " << stats[HOMERS] << endl;
-    outfile << "Walks: " << stats[WALKS] << endl;
-    outfile << "Sacrifice Flies: " << stats[SACFLIES] << endl;
-    outfile << "Batting Average: " << battingAverage(stats) << endl;
-    outfile << "On Base Percentage: " << onBasePercentage(stats) << endl;
-    outfile << "Slugging Percentage: " << sluggingPercentage(stats) << endl;
-    outfile.close(); // Close file
+   int sum = 0;
+   sum += array[(int)SINGLES];
+   sum += (2 * array[(int)DOUBLES]);
+   sum += (3 * array[(int)TRIPLES]);
+   sum += (4 * array[(int)HOMERS]);
+   return (double)sum / array[(int)ATBATS];
 }
-// prints all of the stats to the file a7stats.txt.
-// you should probably check out the description file for all
-// that you'll need to include.
 
-void playBall(int stats[], const int size)
+void printStatsToFile(const int array[], const int size)
 {
-    PlayResult play;
-    GeneratedPlayType playOutcome; // determine if hit, walk, out
-    for (int i = 0; i < 10; i++)
-    {
-        play = roll(playOutcome); // roll the dice
-        cout << "Play: ";
-        printPlayResult(play); // print the play
-        updateStatLine(play, stats);
-    }
+   ofstream outFile;
+   outFile.open("stats.txt");
+   outFile << "At-Bats: " << array[(int)ATBATS] << endl;
+   outFile << "Singles: " << array[(int)SINGLES] << endl;
+   outFile << "Doubles: " << array[(int)DOUBLES] << endl;
+   outFile << "Triples: " << array[(int)TRIPLES] << endl;
+   outFile << "Home Runs: " << array[(int)HOMERS] << endl;
+   outFile << "Walks: " << array[(int)WALKS] << endl;
+   outFile << "Sacrifice Flies: " << array[(int)SACFLIES] << endl;
+   outFile << setprecision(3);
+   outFile << "Batting Average: " << battingAverage(array) << endl;
+   outFile << setprecision(3);
+   outFile << "On-Base Percentage: " << onBasePercentage(array) << endl;
+   outFile << setprecision(3);
+   outFile << "Slugging Percentage: " << sluggingPercentage(array) << endl;
+   outFile.close();
+   return;
 }
-// takes in the array of stats, as well as the size of that array.
-// prints the resulting plays to the screen.
-// once done, it looks for the function necessary to print stats to a file...
+
+void playBall(int array[], const int size)
+{
+   PlayResult result = NONE;
+   GeneratedPlayType playOutcome;
+   for (int i = 0; i < 10; i++)
+   {
+      cout << "Play: ";
+      result = roll(playOutcome);
+      printPlayResult(result);
+      cout << endl;
+      updateStatLine(result, array);
+   }
+   printStatsToFile(array, size);
+   return;
+}
 
 #endif

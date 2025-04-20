@@ -210,10 +210,8 @@ void playBall(vector<Player>& lineup){
       int outs = 0;
       //loop through the players
       for (int i = 0; i < lineup.size(); i++){
-         //generate a random play
-         PlayResult p = generatePlay(playOutcome);
-         //update the player's stats based on the play result
-         updateStatLine(p, lineup[i]);
+         //get the play result
+         play = getPlay();
       }
    }
 }

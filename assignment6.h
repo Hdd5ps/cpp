@@ -6,7 +6,6 @@ using namespace std;
 #ifndef ASSIGNMENT6_H
 #define ASSIGNMENT6_H
 
-// Enumeration for play results
 enum PlayResult
 {
     NONE,
@@ -23,42 +22,39 @@ enum PlayResult
     DOUBLE_PLAY
 };
 
-// Enumeration for generated play types
 enum GeneratedPlayType
 {
     NOT,
     BB,
     HIT,
-    OUT
+    OUT,
+    SACRIFICE
 };
 
-// Initialize random number generator
 void initialize()
 {
     srand(time(0));
 }
 
-// Check if the function is within bounds
 bool isValid(int number)
 {
-    // Checking the bounds for the given number
+    // checking the bounds for the given number
     if (number < 1)
-    {                 // One is the lower bound on a six-sided die
-        return false; // If less than 1, invalid
+    {                 // one is the lower bound on a six-sided die
+        return false; // if less than 1, invalid
     }
     else if (number > 6)
-    {                 // Six is the upper bound on a six-sided die
-        return false; // If greater than 6, invalid
+    {                 // six is the upper bound on a six-sided die
+        return false; // if greater than 6, invalid
     }
-    return true; // Otherwise, within range
+    return true; // otherwise, within range
 }
 
-// Determine the play based on two dice
 PlayResult getPlay(int d1, int d2)
 {
-    // Assuming d1 is smaller/equal to d2
+    // assuming d1 is smaller/equal to d2
     PlayResult play = NONE;
-    // Check to make sure both d1 and d2 are in bounds...
+    // check to make sure both d1 and d2 are in bounds...
     if ((!isValid(d1)) || (!isValid(d2)))
     {
         return play;
@@ -66,7 +62,7 @@ PlayResult getPlay(int d1, int d2)
 
     switch (d1)
     {
-    case 1: // First die is a 1
+    case 1: // first die is a 1
         switch (d2)
         {
         case 1:
@@ -89,7 +85,7 @@ PlayResult getPlay(int d1, int d2)
             break;
         }
         break;
-    case 2: // First die is a 2
+    case 2: // first die is a 2
         switch (d2)
         {
         case 2:
@@ -109,7 +105,7 @@ PlayResult getPlay(int d1, int d2)
             break;
         }
         break;
-    case 3: // First die is a 3
+    case 3: // first die is a 3
         switch (d2)
         {
         case 3:
@@ -126,7 +122,7 @@ PlayResult getPlay(int d1, int d2)
             break;
         }
         break;
-    case 4: // First die is a 4
+    case 4: // first die is a 4
         switch (d2)
         {
         case 4:
@@ -140,7 +136,7 @@ PlayResult getPlay(int d1, int d2)
             break;
         }
         break;
-    case 5: // First die is a 5
+    case 5: // first die is a 5
         switch (d2)
         {
         case 5:
@@ -151,7 +147,7 @@ PlayResult getPlay(int d1, int d2)
             break;
         }
         break;
-    case 6: // First die is a 6
+    case 6: // first die is a 6
         switch (d2)
         {
         case 6:
@@ -164,88 +160,52 @@ PlayResult getPlay(int d1, int d2)
     return play;
 }
 
-// Print the play result
 void printPlayResult(PlayResult p)
 {
     switch (p)
     {
     case WALK:
-        cout << "Walk\n"
-             << endl;
+        cout << "Walk" << endl;
         break;
     case SINGLE:
-        cout << "Single\n"
-             << endl;
+        cout << "Single" << endl;
         break;
     case DOUBLE:
-        cout << "Double\n"
-             << endl;
+        cout << "Double" << endl;
         break;
     case TRIPLE:
-        cout << "Triple\n"
-             << endl;
+        cout << "Triple" << endl;
         break;
     case HOME_RUN:
-        cout << "Home Run\n"
-             << endl;
+        cout << "Home Run" << endl;
         break;
     case FLY_OUT:
-        cout << "Fly Out\n"
-             << endl;
+        cout << "Fly Out" << endl;
         break;
     case POP_OUT:
-        cout << "Pop Out\n"
-             << endl;
+        cout << "Pop Out" << endl;
         break;
     case GROUND_OUT:
-        cout << "Ground Out\n"
-             << endl;
+        cout << "Ground Out" << endl;
         break;
     case STRIKE_OUT:
-        cout << "Strike Out\n"
-             << endl;
+        cout << "Strike Out" << endl;
         break;
     case DOUBLE_PLAY:
-        cout << "Double Play\n"
-             << endl;
+        cout << "Double Play" << endl;
+        break;
+    case SAC_FLY:
+        cout << "Sacrifice Fly" << endl;
         break;
     default:
-        cout << "Sacrifice Fly\n"
-             << endl;
+        cout << "No play" << endl;
         break;
     }
 }
 
-GeneratedPlayType scorePlay(PlayResult play);
-// Function to roll the dice and determine play
-PlayResult roll(GeneratedPlayType &p)
-{
-    int die1, die2, swapValue;
-    int upper = 6, lower = 1;      // Range, just looking at upper and lower values
-    int range = upper - lower + 1; // Range = upper-lower + 1
-    PlayResult play;
-    die1 = rand() % range; // Generate random number
-    die1 += lower;         // Add lower bound; repeat for die2
-    die2 = rand() % range;
-    die2 += lower;
-
-    if (die1 > die2)
-    { // Put lower value first
-        swapValue = die1;
-        die1 = die2;
-        die2 = swapValue;
-    }
-
-    // Determine the play
-    play = getPlay(die1, die2);
-    scorePlay(play);
-    return play; // Send back the resulting play to main()
-}
-
-// Play type determining function (hit, walk, or out)
 GeneratedPlayType scorePlay(PlayResult play)
 {
-    // Determine hit, walk, or out
+    // determine hit, walk, or out
     GeneratedPlayType gpt = NOT;
     switch (play)
     {
@@ -260,58 +220,92 @@ GeneratedPlayType scorePlay(PlayResult play)
     case STRIKE_OUT:
     case DOUBLE_PLAY:
     case GROUND_OUT:
-    case SAC_FLY:
         gpt = OUT;
+        break;
+    case SAC_FLY:
+        gpt = SACRIFICE;
         break;
     case WALK:
         gpt = BB;
         break;
-    default:
-        break; // Nothing to do here, just turn off warnings
+    default: // nothing to do here, just turn off warnings
+        break;
     }
 
     return gpt;
 }
 
-// Calculation for team batting average
-void teamBattingAverage(int hits, int atbats, double &battingAverage)
+PlayResult roll(GeneratedPlayType &gpt)
 {
-    battingAverage = (double)hits / (double)atbats;
-}
+    int die1, die2, swapValue;
+    int upper = 6, lower = 1;      // range, just looking at upper and lower values
+    int range = upper - lower + 1; // range = upper-lower + 1
+    PlayResult play;
+    die1 = rand() % range; // generate random number
+    die1 += lower;         // add lower bound; repeat for die2
+    die2 = rand() % range;
+    die2 += lower;
 
-// Calculation for team on-base percentage
-void teamOnBasePct(int hits, int walks, int atbats, double &onbase)
-{
-    onbase = (double)(hits + walks) / (double)(atbats + walks);
-}
-
-// Calculate total bases
-void totalBases(PlayResult p, int &total)
-{
-    switch (p)
-    {
-    case SINGLE:
-        total += 1;
-        break;
-    case DOUBLE:
-        total += 2;
-        break;
-    case TRIPLE:
-        total += 3;
-        break;
-    case HOME_RUN:
-        total += 4;
-        break;
-    default:
-        break; // Nothing to do here, just turn off warnings
+    if (die1 > die2)
+    { // put lower value first
+        swapValue = die1;
+        die1 = die2;
+        die2 = swapValue;
     }
+
+    // determine the play
+    play = getPlay(die1, die2);
+    gpt = scorePlay(play);
+    return play; // send back the resulting play to main()
 }
 
-// Calculate team slugging percentage
-double teamSluggingPercentage(int atBats, int totalBaseCount)
+void teamBattingAverage(int h, int ab, double &avg)
 {
-    double totalBases = (double)totalBaseCount / (double)atBats;
-    return totalBases;
+
+    // returning by reference parameter
+    // batting average: hits/at-bats
+    avg = (double)h / ab;
+}
+
+void teamOnBasePct(int h, int w, int ab, double &obp)
+{
+
+    // returning by reference parameter
+    // on-base percentage (more or less): (hits + walks)/(at-bats + walks)
+    obp = (h + w) / (double)(ab + w);
+}
+
+void totalBases(PlayResult play, int &sum)
+{
+    // takes in a value from sum and adds on to it, based
+    // on the base hit:
+
+    if (play == SINGLE)
+    { // add 1 base
+        sum++;
+    }
+    if (play == DOUBLE)
+    { // add 2 bases
+        sum += 2;
+    }
+
+    if (play == TRIPLE)
+    { // add 3 bases
+        sum += 3;
+    }
+
+    if (play == HOME_RUN)
+    { // add 4 bases
+        sum += 4;
+    }
+
+    return;
+}
+
+double teamSluggingPercentage(int ab, int totalBases)
+{
+    // straightforward calculation of total bases divided by at-bats
+    return (double)totalBases / ab;
 }
 
 #endif
