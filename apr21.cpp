@@ -1,5 +1,9 @@
 /*
 
+*/
+
+/*
+
 // april 14, 2o25 and april 16
 Create a class called Fraction
 -add
@@ -45,6 +49,11 @@ Operator overloading is a feature in C++ that allows you to redefine the way ope
 This means you can specify how operators like +, -, *, /, etc., behave when applied to objects of your class.
 This is done by defining special member functions or friend functions in your class. For example, you can overload
  the + operator to add two objects of a class together, or the << operator to print an object to an output stream.
+*/
+
+/*
+-overloaded operators w/ friends
+-overloaded operators w/o friends (safer, maintains OOPL concepts - encapsulation)
 */
 
 class Fraction
@@ -186,21 +195,28 @@ public: // methods (some exceptions)
         // print fraction
         cout << getNumerator() << "/" << getDenominator() << endl;
     }
+    /*
+    // // a = the object itself
+    // // b = the argument passed to the function
+    // // c = the object returned by the function
 
-    // a = the object itself
-    // b = the argument passed to the function
-    // c = the object returned by the function
+    // // friend f(Fraction); // friend + function prototype
+    // friend Fraction operator+(const Fraction &f);
+    // // c = a + b
 
-    // friend f(Fraction); // friend + function prototype
-    friend Fraction operator+(const Fraction &f);
-    // c = a + b
+    // friend Fraction operator-(const Fraction, const Fraction);
+    // // c = a - b
+    // friend Fraction operator*(const Fraction, const Fraction);
+    // // c = a * b
+    // friend Fraction operator/(const Fraction, const Fraction);
+    // // c = a / b
+    */
 
-    friend Fraction operator-(const Fraction, const Fraction);
-    // c = a - b
-    friend Fraction operator*(const Fraction, const Fraction);
-    // c = a * b
-    friend Fraction operator/(const Fraction, const Fraction);
-    // c = a / b
+    void publicReduce()
+    {
+        // reduce fraction to lowest form
+        reduce();
+    }
 
 private: // data (some exceptions - methods that don't bring usefulness to class' client)
     void reduce()
@@ -225,74 +241,91 @@ private: // data (some exceptions - methods that don't bring usefulness to class
     int numerator, denominator; // data members
 };
 
-Fraction operator+(const Fraction &f1, const Fraction &f2)
+Fraction operator+(Fraction f1, Fraction f2)
 {
     // add two fractions
     // n1/d1 + n2/d2 = (n1*d2 + n2*d1)/(d1*d2)
 
     Fraction result;
     int tempNumerator1, tempNumerator2, tempDenominator;
-    tempNumerator1 = f1.numerator * f2.denominator;
-    tempNumerator2 = f2.numerator * f1.denominator;
-    tempDenominator = f1.denominator * f2.denominator;
-    result.numerator = tempNumerator1 + tempNumerator2;
-    result.denominator = (tempDenominator);
-    result.reduce(); // reduce fraction to lowest form
+    tempNumerator1 = f1.getNumerator() * f2.getDenominator();
+    tempNumerator2 = f2.getNumerator() * f1.getDenominator();
+    tempDenominator = f1.getDenominator() * f2.getDenominator();
+    result.setNumerator(tempNumerator1 + tempNumerator2);
+    result.setDenominator(tempDenominator);
+    result.publicReduce(); // reduce fraction to lowest form
     return result;   // return the result
 }
 
-Fraction operator-(const Fraction &f1, const Fraction &f2)
+Fraction operator-(Fraction f1, Fraction f2)
 {
     // subtract two fractions
     // n1/d1 - n2/d2 = (n1*d2 - n2*d1)/(d1*d2)
 
     Fraction result;
     int tempNumerator1, tempNumerator2, tempDenominator;
-    tempNumerator1 = f1.numerator * f2.denominator;
-    tempNumerator2 = f2.numerator * f1.denominator;
-    tempDenominator = f1.denominator * f2.denominator;
-    result.numerator = (tempNumerator1 - tempNumerator2);
-    result.denominator = (tempDenominator);
-    result.reduce(); // reduce fraction to lowest form
+    tempNumerator1 = f1.getNumerator() * f2.getDenominator();
+    tempNumerator2 = f2.getNumerator() * f1.getDenominator();
+    tempDenominator = f1.getDenominator() * f2.getDenominator();
+    result.setNumerator(tempNumerator1 - tempNumerator2);
+    result.setDenominator(tempDenominator);
+    result.publicReduce(); // reduce fraction to lowest form
     return result;   // return the result
 }
 
-Fraction operator*(const Fraction &f1, const Fraction &f2)
+Fraction operator*(Fraction f1, Fraction f2)
 {
     // multiply two fractions
     // n1/d1 * n2/d2 = (n1*n2)/(d1*d2)
 
     Fraction result;
     int tempNumerator, tempDenominator;
-    tempNumerator = f1.numerator * f2.numerator;
-    tempDenominator = f1.denominator * f2.denominator();
-    result.numerator = (tempNumerator);
-    result.denominator = (tempDenominator);
-    result.reduce(); // reduce fraction to lowest form
+    tempNumerator = f1.getNumerator() * f2.getNumerator();
+    tempDenominator = f1.getDenominator() * f2.getDenominator();
+    result.setNumerator(tempNumerator);
+    result.setDenominator(tempDenominator);
+    result.publicReduce(); // reduce fraction to lowest form
     return result;   // return the result
 }
 
-Fraction operator/(const Fraction &f1, const Fraction &f2)
+Fraction operator/(Fraction f1, Fraction f2)
 {
     // divide two fractions
     // n1/d1 / n2/d2 = n1/d1 * d2/n2 = (n1*d2)/(d1*n2)
 
     Fraction result;
     int tempNumerator, tempDenominator;
-    tempNumerator = f1.numerator * f2.denominator;
-    tempDenominator = f1.denominator * f2.numerator;
-    result.numerator = (tempNumerator);
-    result.denominator = (tempDenominator);
-    result.reduce(); // reduce fraction to lowest form
+    tempNumerator = f1.getNumerator() * f2.getDenominator();
+    tempDenominator = f1.getDenominator() * f2.getNumerator();
+    result.setNumerator(tempNumerator);
+    result.setDenominator(tempDenominator);
+    result.publicReduce(); // reduce fraction to lowest form
     return result;   // return the result
 }
 
 int main()
 {
-    Fraction f1(1, 2), f2(1, 4);
+    Fraction f1(1, 8), f2(1, 4);
     Fraction f3;
     f3 = f1 + f2; // f3 = f1.addition(f2);
     f3.print();
+    f3 = f3.decimalEquivalent(); // f3 = f1.decimalEquivalent();
+    cout << f3 << endl;
+
+    f3 = f1 - f2; // f3 = f1.subtraction(f2);
+    f3.print();
+    f3 = f3.decimalEquivalent(); // f3 = f1.decimalEquivalent();
+    cout << f3 << endl;
+
+    f3 = f1 * f2; // f3 = f1.multiplication(f2);
+    f3.print();
+    f3 = f3.decimalEquivalent(); // f3 = f1.decimalEquivalent();
+    cout << f3 << endl;
+
+    f3 = f1 / f2; // f3 = f1.division(f2);
+    f3.print();
+    f3 = f3.decimalEquivalent(); // f3 = f1.decimalEquivalent();
+    cout << f3 << endl;
 
     return 0;
 }
