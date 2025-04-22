@@ -1,10 +1,10 @@
 Player              ab   1b   2b   3b   hr   bb   sf   avg     obp     slug    
-Bo Jackson          9    3    1    0    0    0    0    0.444   0.444   0.556   
-Tony Gwynn          9    0    2    0    1    0    0    0.333   0.333   0.889   
-Mike Trout          8    2    0    0    0    1    0    0.250   0.333   0.250   
-Frank Thomas        4    1    0    1    0    0    1    0.500   0.500   1.000   
-Bryce Harper        3    1    0    0    0    2    0    0.333   0.600   0.333   
-George Brett        3    0    1    0    0    1    0    0.333   0.500   0.667   
-Luis Arraez         2    0    0    0    0    1    0    0.000   0.333   0.000   
-Ivan Rodriguez      1    0    0    0    0    0    0    0.000   0.000   0.000   
-Ian Kinsler         0    0    0    0    0    0    0    0.000   0.000   0.000   
+Bo Jackson          5    1    0    0    0    0    0    0.200   0.200   0.200   
+Tony Gwynn          4    1    0    0    0    1    0    0.250   0.400   0.250   
+Mike Trout          2    1    0    0    0    2    1    0.500   0.750   0.500   
+Frank Thomas        4    0    0    0    0    1    0    0.000   0.200   0.000   
+Bryce Harper        3    1    0    0    0    1    1    0.333   0.500   0.333   
+George Brett        5    0    1    1    1    0    0    0.600   0.600   1.800   
+Luis Arraez         5    0    0    1    1    0    0    0.400   0.400   1.400   
+Ivan Rodriguez      2    0    0    0    0    0    2    0.000   0.000   0.000   
+Ian Kinsler         4    0    1    1    0    0    0    0.500   0.500   1.250   

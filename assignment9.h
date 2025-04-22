@@ -150,8 +150,8 @@ void updateStatLine(PlayResult p, Player *pl, const int index)
 void playBall(Player *lineup)
 {
    const int LINEUP_SIZE = 9;
+   int currentBatter = 0; // Track the current batter across innings
 
-   // Initialize the play result
    PlayResult play;
    GeneratedPlayType playOutcome;
 
@@ -161,17 +161,17 @@ void playBall(Player *lineup)
       int inningHits = 0;
       int inningWalks = 0;
 
-      cout << "Inning " << inning + 1 << ": " << endl;
+      cout << "\nInning " << inning + 1 << ": " << endl;
 
-      int batter = 0;
       while (outs < 3)
       {
          PlayResult play = roll(playOutcome); // Simulate the play
-         cout << "Up to bat: " << lineup[batter].name << "\n";
+         cout << "Up to bat: " << lineup[currentBatter].name << "\n";
          cout << "Play: ";
          printPlayResult(play);
+         cout << endl;
 
-         updateStatLine(play, lineup, batter);
+         updateStatLine(play, lineup, currentBatter);
 
          if (play == SINGLE || play == DOUBLE || play == TRIPLE || play == HOME_RUN)
          {
@@ -186,10 +186,11 @@ void playBall(Player *lineup)
             outs++;
          }
 
-         batter = (batter + 1) % LINEUP_SIZE;
+         // Move to the next batter
+         currentBatter = (currentBatter + 1) % LINEUP_SIZE;
       }
 
-      cout << "End of inning " << inning + 1 << ".\n";
+      cout << "\nEnd of inning " << inning + 1 << ".\n";
       cout << "Walks: " << inningWalks << endl;
       cout << "Hits: " << inningHits << endl;
 
