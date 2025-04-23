@@ -40,36 +40,71 @@ public:
    void setAtBats(int ab)
    {
       atBats = ab;
+
+      if (atBats < 0)
+      {
+         atBats = 0;
+      }
    }
 
    void setWalks(int w)
    {
       walks = w;
+
+      if (walks < 0)
+      {
+         walks = 0;
+      }
    }
 
    void setSacflies(int sf)
    {
       sacflies = sf;
+
+      if (sacflies < 0)
+      {
+         sacflies = 0;
+      }
    }
 
    void setSingles(int s)
    {
       singles = s;
+
+      if (singles < 0)
+      {
+         singles = 0;
+      }
    }
 
    void setDoubles(int d)
    {
       doubles = d;
+
+      if (doubles < 0)
+      {
+         doubles = 0;
+      }
    }
 
    void setTriples(int t)
    {
       triples = t;
+
+      if (triples < 0)
+      {
+         triples = 0;
+      }
    }
 
    void setHomers(int h)
    {
       homers = h;
+
+      if (homers < 0)
+      {
+         homers = 0;
+      }
    }
 
    // getters
