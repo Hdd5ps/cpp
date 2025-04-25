@@ -53,7 +53,7 @@ public:
     // common methods
     void eat()
     {
-        cout << "Omnomnomnom... nomnomnom... nomnomnom" << endl;
+        cout << "Omnomnomnom...nomnomnom...nomnomnom" << endl;
     }
     void sleep()
     {
@@ -61,8 +61,8 @@ public:
     }
     void introduceMyself()
     {
-        cout << "Hello, my name is " << name << "." << endl;
-        cout << "My color is " << color << "." << endl;
+        cout << "Hello, my name is " << getName() << "." << endl;
+        cout << "My color is " << getColor() << "." << endl;
     }
 };
 

@@ -15,13 +15,11 @@ public:
     }
     void bark()
     {
-        cout << "*burp*"
-             << endl;
+        cout << "*burp*" << endl;
     }
     void greet()
     {
-        cout << "*whimper*"
-             << endl;
+        cout << "*whimper*" << endl;
     }
     void introduceMyself()
     {
