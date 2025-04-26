@@ -286,6 +286,14 @@ void playBall(vector<Player> &lineup)
          // Update the player's stats based on the play result
          switch (play)
          {
+         case WALK:
+            lineup[currentBatter].setWalks(lineup[currentBatter].getWalks() + 1);
+            inningWalks++;
+            break;
+         case SAC_FLY:
+            lineup[currentBatter].setSacflies(lineup[currentBatter].getSacflies() + 1);
+            outs++;
+            break;
          case SINGLE:
             lineup[currentBatter].setSingles(lineup[currentBatter].getSingles() + 1);
             lineup[currentBatter].setAtBats(lineup[currentBatter].getAtBats() + 1);
@@ -305,13 +313,6 @@ void playBall(vector<Player> &lineup)
             lineup[currentBatter].setHomers(lineup[currentBatter].getHomers() + 1);
             lineup[currentBatter].setAtBats(lineup[currentBatter].getAtBats() + 1);
             inningHits++;
-            break;
-         case WALK:
-            lineup[currentBatter].setWalks(lineup[currentBatter].getWalks() + 1);
-            inningWalks++;
-            break;
-         case SAC_FLY:
-            lineup[currentBatter].setSacflies(lineup[currentBatter].getSacflies() + 1);
             break;
          case FLY_OUT:
          case GROUND_OUT:
