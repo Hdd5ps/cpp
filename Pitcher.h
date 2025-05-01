@@ -14,7 +14,18 @@ public:
    //why?  think:  I can't have a declaration of Pitcher p; - the information must be completely
    //filled in for any object of a class
 
-   Pitcher(string, string, string, bool, bool, bool, int, double, int, int, int, int, int);
+   Pitcher(string fn, string ln, string tn, bool allStar, bool active, bool hof, int eR, double iP, int hits, int walks, int sK, int w, int l)
+   {
+      //call the parent constructor to set the inherited values
+      BaseballPlayer(fn, ln, tn, allStar, active, hof);
+      setEarnedRuns(eR);
+      setInningsPitched(iP);
+      setHits(hits);
+      setWalks(walks);
+      setStrikeouts(sK);
+      setWins(w);
+      setLosses(l);
+   }
    /*
    order of arguments:
    first name

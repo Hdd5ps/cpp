@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <stdexcept>
 using namespace std;
 
 #ifndef BASEBALL_PLAYER_H
@@ -21,14 +22,15 @@ public:
 
    /* ** NOTE:  the constructor may be of use to you to modify a little bit, while maintaining its
    being a prototype here. ** */
-   BaseballPlayer(string first, string last, string team, bool all, bool act, bool hof)
+   BaseballPlayer(string fn = "", string ln = "", string tn = "", bool all = true, bool act = true, bool hof = true)
    {
-      setFirstName(first);
-      setLastName(last);
-      setTeamName(team);
+      setFirstName(fn);
+      setLastName(ln);
+      setTeamName(tn);
       setAllStar(all);
       setActive(act);
       setHallOfFame(hof);
+      bothActiveAndHOF();
    }
    // order of arguments:  first name, last name, team name, if they've been an all-star,
    // if they're active, if they're a hall-of-famer
@@ -37,29 +39,34 @@ public:
    // constructor is called...
 
    // setters - no changes needed to the interface here.
-   void setFirstName(string first);
-   void setLastName(string last);
-   void setTeamName(string team);
-   void setAllStar(bool all);
-   void setActive(bool act);
-   void setHallOfFame(bool hof);
-   
+   void setFirstName(string);
+   void setLastName(string);
+   void setTeamName(string);
+   void setAllStar(bool);
+   void setActive(bool);
+   void setHallOfFame(bool);
+
    // getters - note:  not all say get; no changes needed to the interface here, either.
 
    string getFirstName();
    string getLastName();
    string getTeamName();
-   string getTeamName()
    bool isAnAllStar();
    bool isActive();
-   bool isHallOfFamer();
+   bool isHallOfFamer(); 
 
+   // active and hall of fame exception
+   // if a player is active, they cannot be in the Hall of Fame.
+   // if a player is in the Hall of Fame, they cannot be active.
 
-   // the data you'll need.  Do not modify what's here.
+   void bothActiveAndHOF(
+   );
+
+   
    protected:
    string firstName, lastName, teamName;
    bool allStar, active, hallOfFame;
-
+   
 }; /** END OF THE CLASS INTERFACE **/
 
 // Start writing implementations for each of your methods for BaseballPlayer here
@@ -86,21 +93,11 @@ void BaseballPlayer::setAllStar(bool all)
 void BaseballPlayer::setActive(bool act)
 {
    active = act;
-   // if a player is active, they cannot be in the Hall of Fame.
-   if (active == true)
-   {
-      hallOfFame = false;
-   }
 }
 
 void BaseballPlayer::setHallOfFame(bool hof)
 {
    hallOfFame = hof;
-   // if a player is in the Hall of Fame, they cannot be active.
-   if (hof == true)
-   {
-      active = false;
-   }
 }
 
 string BaseballPlayer::getFirstName()
@@ -108,6 +105,17 @@ string BaseballPlayer::getFirstName()
    return firstName;
 }
 
+void BaseballPlayer::bothActiveAndHOF()
+{
+   if (isActive() && isHallOfFamer())
+   {
+      cout << "A problem has occured with " << getFirstName() << " " << getLastName() << endl;
+      cout << "A baseball player cannot be both active and a Hall-of-Famer." << endl;
+      cout << "Setting the player as being inactive and not a Hall-of-Famer." << endl;
+      active = false;
+      hallOfFame = false;
+   }
+}
 string BaseballPlayer::getLastName()
 {
    return lastName;
@@ -138,7 +146,39 @@ bool BaseballPlayer::isHallOfFamer()
 // basically, it allows something like: cout<<"Baseball Player"<<endl<<bp<<endl;
 // to actually happen
 
-ostream &operator<<(ostream &, BaseballPlayer);
+ostream &operator<<(ostream &os, BaseballPlayer bp)
+{
+
+   os << bp.getFirstName() << " " << bp.getLastName() << endl;
+   os << "Team Name: " << setw(8) << bp.getTeamName() << endl;
+   os << "All-Star: ";
+   if (bp.isAnAllStar())
+   {
+      os << setw(8) <<"Yes" << endl;
+   }
+   else
+   {
+      os << setw(8) << "No" << endl;
+   }
+   os << "Active: ";
+   if (bp.isActive())
+   {
+      os << setw(8) << "Yes" << endl;
+   }
+   else
+   {
+      os << setw(8) << "No" << endl;
+   }
+   os << "Hall of Famer: ";
+   if (bp.isHallOfFamer())
+   {
+      os << setw(8) << "Yes" << endl;
+   }
+   else
+   {
+      os << setw(8) << "No" << endl;
+   }
+}
 // this is a function that is external to the BaseballPlayer class.
 // arguments:  os - where in the output stream you presently are; this will change, as
 // you add stuff you want to print out from BaseballPlayer.
