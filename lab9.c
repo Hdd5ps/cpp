@@ -27,12 +27,40 @@ int main()
             // add words
             words++;
         }
+
+        // Any kind of spacing (space, tab, new line, etc.) should not be considered as part of the character count.
+        if (ch == ' ' || ch == '\n' || ch == '\t')
+        {
+            chars--; // decrement chars for spaces
+        }
+
+        // any standalone punctuation (for example - the preceding dash), this isn’t considered a word, either.  Print out the number of words in the document, as well as the number of non-spaced characters.
+        if (ch == '.' || ch == ',' || ch == ';' || ch == ':' || ch == '!' || ch == '?' || ch == '-' || ch == '(' || ch == ')' || ch == '[' || ch == ']' || ch == '{' || ch == '}')
+        {
+            words--; // decrement words for punctuation
+        }
+
     }
 
     fclose(file); // it was missing a semicolon
 
+
+    // print to screen
     printf("Words: %d\n", words);                  // wrong variable name word
-    printf("Characters (no spaces): %d\n", chars - words); // word variable name was wrong
+    printf("Characters (no spaces): %d\n", chars - 1); // we don't need the word variable here
+
+
+    // print out to a document
+    FILE *outputFile;
+    outputFile = fopen("output.txt", "w");
+    if (outputFile == NULL)
+    {
+        printf("Can't open file\n");
+        return 1;
+    }
+    fprintf(outputFile, "Words: %d\n", words);
+    fprintf(outputFile, "Characters (no spaces): %d\n", chars - 1);
+    fclose(outputFile); // it was missing a semicolon
 
     return 0;
 }
