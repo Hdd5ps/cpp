@@ -37,76 +37,101 @@ public:
    // constructor is called...
 
    // setters - no changes needed to the interface here.
-   void setFirstName(string first)
-   {
-      firstName = first;
-   }
-   void setLastName(string last)
-   {
-      lastName = last;
-   }
-   void setTeamName(string team)
-   {
-      teamName = team;
-   }
-   void setAllStar(bool all)
-   {
-      allStar = all;
-   }
-   void setActive(bool act)
-   {
-      active = act;
-      // if a player is active, they cannot be in the Hall of Fame.
-      if (active == true)
-      {
-         hallOfFame = false;
-      }
-   }
-   void setHallOfFame(bool hof)
-   {
-      hallOfFame = hof;
-      // if a player is in the Hall of Fame, they cannot be active.
-      if (hof == true)
-      {
-         active = false;
-      }
-   }
-
+   void setFirstName(string first);
+   void setLastName(string last);
+   void setTeamName(string team);
+   void setAllStar(bool all);
+   void setActive(bool act);
+   void setHallOfFame(bool hof);
+   
    // getters - note:  not all say get; no changes needed to the interface here, either.
 
-   string getFirstName()
-   {
-      return firstName;
-   }
-   string getLastName()
-   {
-      return lastName;
-   }
+   string getFirstName();
+   string getLastName();
+   string getTeamName();
    string getTeamName()
-   {
-      return teamName;
-   }
-   bool isAnAllStar()
-   {
-      return allStar;
-   }
-   bool isActive()
-   {
-      return active;
-   }
-   bool isHallOfFamer()
-   {
-      return hallOfFame;
-   }
+   bool isAnAllStar();
+   bool isActive();
+   bool isHallOfFamer();
+
 
    // the data you'll need.  Do not modify what's here.
-protected:
+   protected:
    string firstName, lastName, teamName;
    bool allStar, active, hallOfFame;
 
 }; /** END OF THE CLASS INTERFACE **/
 
 // Start writing implementations for each of your methods for BaseballPlayer here
+void BaseballPlayer::setFirstName(string first)
+{
+   firstName = first;
+}
+
+void BaseballPlayer::setLastName(string last)
+{
+   lastName = last;
+}
+
+void BaseballPlayer::setTeamName(string team)
+{
+   teamName = team;
+}
+
+void BaseballPlayer::setAllStar(bool all)
+{
+   allStar = all;
+}
+
+void BaseballPlayer::setActive(bool act)
+{
+   active = act;
+   // if a player is active, they cannot be in the Hall of Fame.
+   if (active == true)
+   {
+      hallOfFame = false;
+   }
+}
+
+void BaseballPlayer::setHallOfFame(bool hof)
+{
+   hallOfFame = hof;
+   // if a player is in the Hall of Fame, they cannot be active.
+   if (hof == true)
+   {
+      active = false;
+   }
+}
+
+string BaseballPlayer::getFirstName()
+{
+   return firstName;
+}
+
+string BaseballPlayer::getLastName()
+{
+   return lastName;
+}
+
+string BaseballPlayer::getTeamName()
+{
+   return teamName;
+}
+
+bool BaseballPlayer::isAnAllStar()
+{
+   return allStar;
+}
+
+bool BaseballPlayer::isActive()
+{
+   return active;
+}
+
+bool BaseballPlayer::isHallOfFamer()
+{
+   return hallOfFame;
+}
 
 // ostream& as the return type for operator<< - allows the chaining of multiple items with
 // stream insertion operators (you'd see the same thing with >>, too.
