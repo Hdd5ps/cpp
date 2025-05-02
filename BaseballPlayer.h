@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
-#include <stdexcept>
 using namespace std;
 
 #ifndef BASEBALL_PLAYER_H
@@ -22,7 +21,7 @@ public:
 
    /* ** NOTE:  the constructor may be of use to you to modify a little bit, while maintaining its
    being a prototype here. ** */
-   BaseballPlayer(string fn = "", string ln = "", string tn = "", bool all = true, bool act = true, bool hof = true)
+   BaseballPlayer(string fn, string ln, string tn, bool all, bool act, bool hof)
    {
       setFirstName(fn);
       setLastName(ln);
@@ -30,8 +29,18 @@ public:
       setAllStar(all);
       setActive(act);
       setHallOfFame(hof);
-      bothActiveAndHOF();
    }
+   // default constructor
+   BaseballPlayer()
+   {
+      firstName = "";
+      lastName = "";
+      teamName = "";
+      allStar = false;
+      active = false;
+      hallOfFame = false;
+   }
+      
    // order of arguments:  first name, last name, team name, if they've been an all-star,
    // if they're active, if they're a hall-of-famer
 
@@ -39,12 +48,12 @@ public:
    // constructor is called...
 
    // setters - no changes needed to the interface here.
-   void setFirstName(string);
-   void setLastName(string);
-   void setTeamName(string);
-   void setAllStar(bool);
-   void setActive(bool);
-   void setHallOfFame(bool);
+   void setFirstName(string first);
+   void setLastName(string last);
+   void setTeamName(string team);
+   void setAllStar(bool all);
+   void setActive(bool act);
+   void setHallOfFame(bool hof);
 
    // getters - note:  not all say get; no changes needed to the interface here, either.
 
@@ -53,20 +62,18 @@ public:
    string getTeamName();
    bool isAnAllStar();
    bool isActive();
-   bool isHallOfFamer(); 
+   bool isHallOfFamer();
 
-   // active and hall of fame exception
-   // if a player is active, they cannot be in the Hall of Fame.
-   // if a player is in the Hall of Fame, they cannot be active.
+   // exceptions
+   // divideByZeroException - this is a static method, so it can be called without an object
+   void divideByZeroException();
+   void isActiveAndHOFException();
 
-   void bothActiveAndHOF(
-   );
-
-   
-   protected:
+private:
+protected:
    string firstName, lastName, teamName;
    bool allStar, active, hallOfFame;
-   
+
 }; /** END OF THE CLASS INTERFACE **/
 
 // Start writing implementations for each of your methods for BaseballPlayer here
@@ -92,12 +99,26 @@ void BaseballPlayer::setAllStar(bool all)
 
 void BaseballPlayer::setActive(bool act)
 {
-   active = act;
+   if (act && hallOfFame)
+   {
+      isActiveAndHOFException();
+   }
+   else
+   {
+      active = act;
+   }
 }
 
 void BaseballPlayer::setHallOfFame(bool hof)
 {
-   hallOfFame = hof;
+   if (hof && active)
+   {
+      isActiveAndHOFException();
+   }
+   else
+   {
+      hallOfFame = hof;
+   }
 }
 
 string BaseballPlayer::getFirstName()
@@ -105,17 +126,6 @@ string BaseballPlayer::getFirstName()
    return firstName;
 }
 
-void BaseballPlayer::bothActiveAndHOF()
-{
-   if (isActive() && isHallOfFamer())
-   {
-      cout << "A problem has occured with " << getFirstName() << " " << getLastName() << endl;
-      cout << "A baseball player cannot be both active and a Hall-of-Famer." << endl;
-      cout << "Setting the player as being inactive and not a Hall-of-Famer." << endl;
-      active = false;
-      hallOfFame = false;
-   }
-}
 string BaseballPlayer::getLastName()
 {
    return lastName;
@@ -146,39 +156,56 @@ bool BaseballPlayer::isHallOfFamer()
 // basically, it allows something like: cout<<"Baseball Player"<<endl<<bp<<endl;
 // to actually happen
 
-ostream &operator<<(ostream &os, BaseballPlayer bp)
+void BaseballPlayer::divideByZeroException()
 {
+   cout << "Error:  Division by zero." << endl;
+}
 
-   os << bp.getFirstName() << " " << bp.getLastName() << endl;
-   os << "Team Name: " << setw(8) << bp.getTeamName() << endl;
-   os << "All-Star: ";
+void BaseballPlayer::isActiveAndHOFException()
+{
+   cout << "A problem has occurred with " << getFirstName() << " " << getLastName() << "." << endl;
+   cout << "A baseball player cannot be both active and a Hall-of-Famer." << endl;
+   cout << "Setting the player as being inactive and not a Hall-of-Famer." << endl;
+   active = false;
+   hallOfFame = false;
+}
+
+ostream &operator<<(ostream &os, BaseballPlayer &bp)
+{
+   os << left << bp.getFirstName() << " " << bp.getLastName() << endl;
+   os << left << setw(35) << "Team Name: ";
+   os << bp.getTeamName() << endl;
+   os << left << setw(35) << "All-Star: ";
    if (bp.isAnAllStar())
    {
-      os << setw(8) <<"Yes" << endl;
+      os << "Yes" << endl;
    }
    else
    {
-      os << setw(8) << "No" << endl;
+      os << "No" << endl;
    }
-   os << "Active: ";
+   os << left << setw(35) << "Active: ";
    if (bp.isActive())
    {
-      os << setw(8) << "Yes" << endl;
+      os << "Yes" << endl;
    }
    else
    {
-      os << setw(8) << "No" << endl;
+      os << "No" << endl;
    }
-   os << "Hall of Famer: ";
+   os << left << setw(35) << "Hall of Famer: ";
    if (bp.isHallOfFamer())
    {
-      os << setw(8) << "Yes" << endl;
+      os << "Yes" << endl;
    }
    else
    {
-      os << setw(8) << "No" << endl;
+      os << "No" << endl;
    }
+
+   return os;
 }
+
 // this is a function that is external to the BaseballPlayer class.
 // arguments:  os - where in the output stream you presently are; this will change, as
 // you add stuff you want to print out from BaseballPlayer.
