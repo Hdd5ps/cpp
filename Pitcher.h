@@ -16,10 +16,8 @@ public:
    // why?  think:  I can't have a declaration of Pitcher p; - the information must be completely
    // filled in for any object of a class
 
-   Pitcher(string fn, string ln, string tn, bool allStar, bool active, bool hof, int eR, double iP, int hits, int walks, int sK, int w, int l)
+   Pitcher(string fn, string ln, string tn, bool allStar, bool active, bool hof, int eR, double iP, int hits, int walks, int sK, int w, int l) : BaseballPlayer(fn, ln, tn, allStar, active, hof)
    {
-      // call the parent constructor to set the inherited values
-      BaseballPlayer(fn, ln, tn, allStar, active, hof);
       setEarnedRuns(eR);
       setInningsPitched(iP);
       setHits(hits);
@@ -29,16 +27,16 @@ public:
       setLosses(l);
    }
 
-   Pitcher()
+   Pitcher() : BaseballPlayer()
    {
       // default constructor
-      earnedRuns = 0;
-      inningsPitched = 0.0;
-      hits = 0;
-      walks = 0;
-      strikeouts = 0;
-      wins = 0;
-      losses = 0;
+      setEarnedRuns(0);
+      setInningsPitched(0.0);
+      setHits(0);
+      setWalks(0);
+      setStrikeouts(0);
+      setWins(0);
+      setLosses(0);
    }
    /*
    order of arguments:
@@ -270,7 +268,7 @@ ostream &operator<<(ostream &os, Pitcher p)
    os << left << setw(35) << "Earned Run Average: " << fixed << setprecision(2) << p.earnedRunAverage() << endl;
    os << left << setw(35) << "whip: " << fixed << setprecision(2) << p.whip() << endl;
    os << left << setw(35) << "Strikeouts per nine innings: " << fixed << setprecision(2) << p.strikeoutsPerNineInnings() << endl;
-   os << left << setw(35) << "Ratio of Strikeouts to Walks: " << p.ratioStrikeoutsToWalks() << endl;
+   os << left << setw(35) << "Ratio of Strikeouts to Walks: " << p.ratioStrikeoutsToWalks();
 
    return os;
 }

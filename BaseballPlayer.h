@@ -33,14 +33,14 @@ public:
    // default constructor
    BaseballPlayer()
    {
-      firstName = "";
-      lastName = "";
-      teamName = "";
-      allStar = false;
-      active = false;
-      hallOfFame = false;
+      setFirstName("");
+      setLastName("");
+      setTeamName("");
+      setAllStar(false);
+      setActive(false);
+      setHallOfFame(false);
    }
-      
+
    // order of arguments:  first name, last name, team name, if they've been an all-star,
    // if they're active, if they're a hall-of-famer
 
@@ -48,12 +48,12 @@ public:
    // constructor is called...
 
    // setters - no changes needed to the interface here.
-   void setFirstName(string first);
-   void setLastName(string last);
-   void setTeamName(string team);
-   void setAllStar(bool all);
-   void setActive(bool act);
-   void setHallOfFame(bool hof);
+   void setFirstName(string);
+   void setLastName(string);
+   void setTeamName(string);
+   void setAllStar(bool);
+   void setActive(bool);
+   void setHallOfFame(bool);
 
    // getters - note:  not all say get; no changes needed to the interface here, either.
 
@@ -99,26 +99,12 @@ void BaseballPlayer::setAllStar(bool all)
 
 void BaseballPlayer::setActive(bool act)
 {
-   if (act && hallOfFame)
-   {
-      isActiveAndHOFException();
-   }
-   else
-   {
-      active = act;
-   }
+   active = act;
+   isActiveAndHOFException();
 }
-
 void BaseballPlayer::setHallOfFame(bool hof)
 {
-   if (hof && active)
-   {
-      isActiveAndHOFException();
-   }
-   else
-   {
-      hallOfFame = hof;
-   }
+   hallOfFame = hof;
 }
 
 string BaseballPlayer::getFirstName()
@@ -163,14 +149,15 @@ void BaseballPlayer::divideByZeroException()
 
 void BaseballPlayer::isActiveAndHOFException()
 {
-   cout << "A problem has occurred with " << getFirstName() << " " << getLastName() << "." << endl;
-   cout << "A baseball player cannot be both active and a Hall-of-Famer." << endl;
-   cout << "Setting the player as being inactive and not a Hall-of-Famer." << endl;
-   active = false;
-   hallOfFame = false;
+   if (active && hallOfFame)
+   {
+      cout << "A problem has occurred with " << getFirstName() << " " << getLastName() << "." << endl;
+      cout << "A baseball player cannot be both active and a Hall-of-Famer." << endl;
+      cout << "Setting the player as being inactive and not a Hall-of-Famer." << endl;
+   }
 }
 
-ostream &operator<<(ostream &os, BaseballPlayer &bp)
+ostream &operator<<(ostream &os, BaseballPlayer bp)
 {
    os << left << bp.getFirstName() << " " << bp.getLastName() << endl;
    os << left << setw(35) << "Team Name: ";
@@ -185,18 +172,27 @@ ostream &operator<<(ostream &os, BaseballPlayer &bp)
       os << "No" << endl;
    }
    os << left << setw(35) << "Active: ";
-   if (bp.isActive())
+   if (bp.isActive() && !bp.isHallOfFamer())
    {
       os << "Yes" << endl;
+   }
+   else if (bp.isActive() && bp.isHallOfFamer())
+   {
+      os << "No" << endl;
    }
    else
    {
       os << "No" << endl;
    }
+
    os << left << setw(35) << "Hall of Famer: ";
-   if (bp.isHallOfFamer())
+   if (bp.isHallOfFamer() && !bp.isActive())
    {
       os << "Yes" << endl;
+   }
+   else if (bp.isHallOfFamer() && bp.isActive())
+   {
+      os << "No" << endl;
    }
    else
    {

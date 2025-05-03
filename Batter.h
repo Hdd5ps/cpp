@@ -29,14 +29,14 @@ public:
    Batter() : BaseballPlayer()
    {
       // default constructor
-      atBats = 0;
-      hits = 0;
-      doubles = 0;
-      triples = 0;
-      homers = 0;
-      walks = 0;
-      hitByPitch = 0;
-      sacrificeFlies = 0;
+      setAtBats(0);
+      setHits(0);
+      setDoubles(0);
+      setTriples(0);
+      setHomeRuns(0);
+      setWalks(0);
+      setHitsByPitch(0);
+      setSacrificeFlies(0);
    }
 
    /*
@@ -191,12 +191,19 @@ double Batter::battingAverage()
 
 double Batter::onBasePercentage()
 {
-   if (hits + walks + hitByPitch + sacrificeFlies == 0)
+   if (atBats == 0)
    {
       BaseballPlayer::divideByZeroException();
       return 0.0;
    }
-   return (double)(hits + walks + hitByPitch) / (hits + walks + hitByPitch + sacrificeFlies);
+   double numerator = hits + walks + hitByPitch;
+   double denominator = atBats + walks + hitByPitch + sacrificeFlies;
+   if (denominator == 0)
+   {
+      BaseballPlayer::divideByZeroException();
+      return 0.0;
+   }
+   return numerator / denominator;
 }
 
 double Batter::sluggingPercentage()
@@ -206,7 +213,9 @@ double Batter::sluggingPercentage()
       BaseballPlayer::divideByZeroException();
       return 0.0;
    }
-   return (double)(hits + (2 * doubles) + (3 * triples) + (4 * homers)) / (atBats);
+   int singles = hits - (doubles + triples + homers);
+   double numerator = singles + (2 * doubles) + (3 * triples) + (4 * homers);
+   return numerator / atBats;
 }
 
 double Batter::onBasePlusSluggingPercentage()
@@ -230,7 +239,7 @@ ostream &operator<<(ostream &os, Batter bp)
    os << left << setw(35) << "Batting Average: " << fixed << setprecision(3) << bp.battingAverage() << endl;
    os << left << setw(35) << "On Base Percentage: " << fixed << setprecision(3) << bp.onBasePercentage() << endl;
    os << left << setw(35) << "Slugging Percentage: " << fixed << setprecision(3) << bp.sluggingPercentage() << endl;
-   os << left << setw(35) << "On Base Plus Slugging Percentage: " << fixed << setprecision(3) << bp.onBasePlusSluggingPercentage() << endl;
+   os << left << setw(35) << "On Base Plus Slugging Percentage: " << fixed << setprecision(3) << bp.onBasePlusSluggingPercentage();
 
    return os;
 }
