@@ -53,5 +53,5 @@ class dvdType
     string movieProducer; // variable to store the name of the producer
     string movieDirector; // variable to store the name of the director
     string movieProductionCo; // variable to store the name of the production company
-    int setCopiesInStock; // variable to store the number of copies in stock
+    int copiesInStock; // variable to store the number of copies in stock
 };
