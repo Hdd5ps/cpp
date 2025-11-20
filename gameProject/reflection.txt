@@ -1,0 +1,20 @@
+Kamal
+Role: World/Tree Lead
+Contributions:
+• Designed and implemented the binary tree representing the game world with 7+ nodes.
+• Added helper functions: createNode(), createWorld(), and traversal methods (preorder, inorder, postorder).
+• Implemented memory cleanup (deleteTree) and search functionality (findByName).
+• Created a clear structure for world representation and ensured integration readiness for game loop and save/load features.
+Challenges:
+• Balancing simplicity with flexibility for future features like save/load.
+• Ensuring traversal outputs were clear and useful for debugging.
+• Avoiding overly complex logic while maintaining readability.
+Learnings:
+• Gained practical experience in recursive tree operations and memory management.
+• Learned how modular design improves collaboration in multi-person projects.
+• Understood the importance of planning data structures for integration with other modules (inventory and game loop).
+
+Solomon
+
+
+Dallas
