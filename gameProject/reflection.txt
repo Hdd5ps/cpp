@@ -15,6 +15,6 @@ Learnings:
 • Understood the importance of planning data structures for integration with other modules (inventory and game loop).
 
 Solomon
-
+For this project, I was responsible for building the inventory system using a singly linked list. I created an ItemNode structure and wrote the functions to add items, remove items, print the inventory, and delete the whole list. Making the list work taught me how pointers move through nodes and how important it is to update them correctly when inserting or removing something. I learned that linked lists grow and shrink easily during the game, which makes them a good choice for an inventory because the number of items can change at any time. My code connects with Dallas’s game loop because his commands call my functions whenever the player takes or drops an item. It also works with Kamal’s tree, since each location can only hold one item, and the rest go into my linked list. Overall, this project helped me understand pointers better and how different modules work together.
 
 Dallas
